@@ -16,7 +16,18 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
+import { RootState } from "@/app/Redux/store";
+
+import { useSelector, useDispatch } from "react-redux";
+import {
+  increment,
+  decrement,
+  incrementByAmount,
+} from "@/app/Redux/Features/counter/counterSlice";
+
 export default function CallToActionWithVideo() {
+  const count = useSelector((state: RootState) => state.counter.value);
+  const dispatch = useDispatch();
   return (
     <Container maxW={"7xl"}>
       <Stack
@@ -52,6 +63,11 @@ export default function CallToActionWithVideo() {
               use everywhere!
             </Text>
           </Heading>
+          <Button onClick={() => dispatch(increment())}>weheehee</Button>
+          <Button onClick={() => dispatch(decrement())}>wohohoho</Button>
+          <Button onClick={() => dispatch(incrementByAmount(5))}>aaaa</Button>
+
+          <Text>{count}</Text>
           <Text color={"gray.500"}>
             Snippy is a rich coding snippets app that lets you create your own
             code snippets, categorize them, and even sync them in the cloud so

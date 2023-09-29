@@ -7,6 +7,7 @@ import {
   Stack,
   Collapse,
   Icon,
+  Image,
   Link,
   Popover,
   PopoverTrigger,
@@ -59,7 +60,12 @@ export default function WithSubnavigation() {
             color={useColorModeValue("gray.800", "white")}
           >
             <Button as="a" href="/" variant={"link"}>
-              Logo
+              <Image
+                alt={"dzecko logo"}
+                w={"20%"}
+                h={"5%"}
+                src={"dzecko_logo.png"}
+              />
             </Button>
           </Text>
 
