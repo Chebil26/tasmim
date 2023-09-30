@@ -14,14 +14,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-
       <body>
         <Providers>
+          {/* for redux toolkit */}
           <ChakraProvider>
+            {/* for charkra ui */}
             <div>
-              <WithSubnavigation />
+              <WithSubnavigation /> {/* navbar */}
               {children}
-              <SmallWithSocial />
+              <SmallWithSocial /> {/* footer */}
             </div>
           </ChakraProvider>
         </Providers>

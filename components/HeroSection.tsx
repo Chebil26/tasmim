@@ -23,7 +23,7 @@ import {
   increment,
   decrement,
   incrementByAmount,
-} from "@/app/Redux/Features/counter/counterSlice";
+} from "@/app/Redux/Features/counterSlice";
 
 export default function CallToActionWithVideo() {
   const count = useSelector((state: RootState) => state.counter.value);
