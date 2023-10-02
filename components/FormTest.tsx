@@ -31,58 +31,72 @@ import {
   StepTitle,
   Stepper,
   useSteps,
+  Icon,
 } from "@chakra-ui/react";
+import { CheckIcon } from "@chakra-ui/icons";
 
 import { useToast } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategories } from "@/app/Redux/Features/categorySlice";
+import { RootState, AppDispatch } from "@/app/Redux/store";
 
 const Form1 = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null
+  );
+
+  const dispatch: AppDispatch = useDispatch();
+  const categories = useSelector(
+    (state: RootState) => state.categories.categories
+  );
+  const status = useSelector((state: RootState) => state.categories.status);
+
+  const handleCategorySelect = (categoryId: number) => {
+    setSelectedCategoryId(categoryId);
+  };
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  const mappedData = categories.map((item) => ({
+    id: item.id,
+    name: item.name,
+    ref: item.ref,
+    description: item.description,
+  }));
+
   return (
     <>
-      <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
-        User Registration
+      <Heading w="100%" textAlign="center" fontWeight="normal" mb="2%">
+        Category
       </Heading>
       <Flex>
-        <FormControl mr="5%">
-          <FormLabel htmlFor="first-name" fontWeight={"normal"}>
-            First name
-          </FormLabel>
-          <Input id="first-name" placeholder="First name" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel htmlFor="last-name" fontWeight={"normal"}>
-            Last name
-          </FormLabel>
-          <Input id="last-name" placeholder="First name" />
-        </FormControl>
+        {mappedData.map((category) => (
+          <FormControl key={category.id} mr="5%">
+            <FormLabel
+              htmlFor={`category-${category.id}`}
+              fontWeight="normal"
+              onClick={() => handleCategorySelect(category.id)}
+              cursor="pointer"
+              color={selectedCategoryId === category.id ? "blue.500" : "black"}
+              display="flex"
+              alignItems="center"
+            >
+              {category.name}
+              {selectedCategoryId === category.id && (
+                <Box ml="0.5rem">
+                  <Icon as={CheckIcon} color="green.500" />
+                </Box>
+              )}
+            </FormLabel>
+            <Box ml="0.5rem">
+              <Icon as={CheckIcon} color="green.500" />
+            </Box>
+          </FormControl>
+        ))}
       </Flex>
-      <FormControl mt="2%">
-        <FormLabel htmlFor="email" fontWeight={"normal"}>
-          Email address
-        </FormLabel>
-        <Input id="email" type="email" />
-        <FormHelperText>We&apos;ll never share your email.</FormHelperText>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel htmlFor="password" fontWeight={"normal"} mt="2%">
-          Password
-        </FormLabel>
-        <InputGroup size="md">
-          <Input
-            pr="4.5rem"
-            type={show ? "text" : "password"}
-            placeholder="Enter password"
-          />
-          <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
-            </Button>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
     </>
   );
 };
@@ -320,7 +334,7 @@ export default function Multistep() {
         borderWidth="1px"
         rounded="lg"
         shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        maxWidth={800}
+        maxWidth={1200}
         p={6}
         m="10px auto"
         as="form"
