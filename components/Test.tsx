@@ -4,9 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/app/Redux/Features/categorySlice";
 import { RootState, AppDispatch } from "@/app/Redux/store";
 
+type Category = {
+  description: string;
+  id: number;
+  name: string;
+  ref: string;
+};
+
 export default function Test() {
   const dispatch: AppDispatch = useDispatch();
-  const categories = useSelector(
+  const categories: Category[] = useSelector(
     (state: RootState) => state.categories.categories
   );
   const status = useSelector((state: RootState) => state.categories.status);
