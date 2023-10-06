@@ -41,13 +41,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/app/Redux/Features/categorySlice";
 import { RootState, AppDispatch } from "@/app/Redux/store";
 
+type Category = {
+  description: string;
+  id: number;
+  name: string;
+  ref: string;
+};
+
 const Form1 = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
   );
 
   const dispatch: AppDispatch = useDispatch();
-  const categories = useSelector(
+  const categories: Category[] = useSelector(
     (state: RootState) => state.categories.categories
   );
   const status = useSelector((state: RootState) => state.categories.status);
