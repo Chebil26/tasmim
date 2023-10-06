@@ -355,7 +355,7 @@ export default function Multistep() {
         ></Progress> */}
 
         <Stack>
-          <Stepper size="sm" index={activeStep} gap="0">
+          {/* <Stepper size="sm" index={activeStep} gap="0">
             {steps.map((step, index) => (
               <Step
                 key={index}
@@ -371,7 +371,7 @@ export default function Multistep() {
                 <StepSeparator _horizontal={{ ml: "0" }} />
               </Step>
             ))}
-          </Stepper>
+          </Stepper> */}
           <Text>
             Step {activeStep + 1}: <b>{activeStepText}</b>
           </Text>
