@@ -6,18 +6,18 @@ import {
   Text,
   useColorModeValue,
   VisuallyHidden,
-} from "@chakra-ui/react"
-import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa"
-import { ReactNode } from "react"
+} from "@chakra-ui/react";
+import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { ReactNode } from "react";
 
 const SocialButton = ({
   children,
   label,
   href,
 }: {
-  children: ReactNode
-  label: string
-  href: string
+  children: ReactNode;
+  label: string;
+  href: string;
 }) => {
   return (
     <chakra.button
@@ -39,8 +39,8 @@ const SocialButton = ({
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
     </chakra.button>
-  )
-}
+  );
+};
 
 export default function SmallWithSocial() {
   return (
@@ -71,5 +71,5 @@ export default function SmallWithSocial() {
         </Stack>
       </Container>
     </Box>
-  )
+  );
 }

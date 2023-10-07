@@ -1,5 +1,5 @@
 import { Box, Text, Spinner } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/app/Redux/Features/categorySlice";
 import { RootState, AppDispatch } from "@/app/Redux/store";
@@ -22,7 +22,6 @@ export default function Test() {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  console.log(categories);
   return (
     <Box maxW="7xl" mx="auto" pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       {status === "loading" ? (
