@@ -24,6 +24,11 @@ import {
   useRadioGroup,
   HStack,
   Radio,
+  Card,
+  CardHeader,
+  CardBody,
+  StackDivider,
+  Image,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 
@@ -32,7 +37,9 @@ import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/app/Redux/Features/categorySlice";
+import { fetchTypes } from "@/app/Redux/Features/typeSlice";
 import { RootState, AppDispatch } from "@/app/Redux/store";
+import { cp } from "fs";
 
 const totalSteps = 4;
 
@@ -43,11 +50,15 @@ type Category = {
   ref: string;
 };
 
-const steps = [
-  { title: "First", description: "Contact Info" },
-  { title: "Second", description: "Date & Time" },
-  { title: "Third", description: "Select Rooms" },
-];
+type Type = {
+  id: number;
+  name: string;
+  ref: null | string;
+  description: null | string;
+  image: string; // Assuming the image can be a string or null
+  images: string[]; // Assuming images is an array of strings
+};
+
 const StepForm: React.FC = () => {
   const [step, setStep] = useState(1);
 
@@ -79,14 +90,15 @@ const StepForm: React.FC = () => {
           </Text>
         </Stack> */}
 
-        <Heading mb={4}>Step {step}</Heading>
+        {step === 1 && <Heading mb={4}>Categorie</Heading>}
+        {step === 2 && <Heading mb={4}>Type</Heading>}
+        {step === 3 && <Heading mb={4}>Ambiance</Heading>}
+        {step === 4 && <Heading mb={4}>aaa</Heading>}
 
         {step === 1 && <Step1 />}
         {step === 2 && <Step2 />}
         {step === 3 && <Step3 />}
         {step === 4 && <Step4 />}
-
-        {/* Add more steps similarly for steps 3 to 9 */}
 
         <Box display="flex" justifyContent="alignItems">
           <Button onClick={prevStep} isDisabled={step === 1} marginRight={2}>
@@ -132,28 +144,82 @@ const Step1: React.FC = () => {
   });
 
   return (
-    <Stack {...getRootProps()}>
-      <Text>{value}</Text>
-      <HStack>
-        <CustomRadio
-          desc={category1.name}
-          {...getRadioProps({ value: category1.name })}
-        />
-
-        <CustomRadio
-          desc={category2.name}
-          {...getRadioProps({ value: category2.name })}
-        />
-      </HStack>
-    </Stack>
+    <>
+      <Card>
+        <CardBody>
+          <HStack divider={<StackDivider />} spacing="4">
+            {categories.map((category) => (
+              <Box key={category.id}>
+                <Heading size="xs" textTransform="uppercase">
+                  <CustomRadio
+                    desc={category.name}
+                    {...getRadioProps({ value: category.name })}
+                  />
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  {category.description}
+                </Text>
+              </Box>
+            ))}
+          </HStack>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 
 const Step2: React.FC = () => {
+  const toast = useToast();
+
+  const dispatch: AppDispatch = useDispatch();
+  const types: Type[] = useSelector((state: RootState) => state.type.types);
+
+  useEffect(() => {
+    dispatch(fetchTypes());
+  }, [dispatch]);
+
+  const handleChange = (value: any) => {
+    toast({
+      title: `Type Choisie  ${value}!`,
+      status: "success",
+      duration: 2000,
+    });
+  };
+
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue: "Particulier",
+    onChange: handleChange,
+  });
+
   return (
-    <VStack align="stretch">
-      <Text>Step 2 content</Text>
-    </VStack>
+    <>
+      <Card>
+        <CardHeader>
+          <Heading size="md">Type</Heading>
+        </CardHeader>
+
+        <CardBody>
+          <Stack divider={<StackDivider />} spacing="4">
+            {types.map((type) => (
+              <Box key={type.id}>
+                <Heading size="xs" textTransform="uppercase">
+                  <CustomRadio
+                    desc={type.name}
+                    {...getRadioProps({ value: type.name })}
+                  />
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  {type.description}
+                </Text>
+                {/* <Box boxSize="200px">
+                  <Image src={type.image} />
+                </Box> */}
+              </Box>
+            ))}
+          </Stack>
+        </CardBody>
+      </Card>
+    </>
   );
 };
 
