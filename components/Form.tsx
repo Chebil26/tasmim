@@ -1,6 +1,7 @@
 // StepForm.tsx
 
 import React, { useState } from "react";
+import { API_BASE_URL } from "@/config";
 import {
   Box,
   Button,
@@ -125,10 +126,6 @@ const Step1: React.FC = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
-  console.log(categories);
-
-  const category1 = categories[0];
-  const category2 = categories[1];
 
   const handleChange = (value: any) => {
     toast({
@@ -173,7 +170,7 @@ const Step2: React.FC = () => {
 
   const dispatch: AppDispatch = useDispatch();
   const types: Type[] = useSelector((state: RootState) => state.type.types);
-
+  console.log(types);
   useEffect(() => {
     dispatch(fetchTypes());
   }, [dispatch]);
@@ -212,7 +209,7 @@ const Step2: React.FC = () => {
                   {type.description}
                 </Text>
                 {/* <Box boxSize="200px">
-                  <Image src={type.image} />
+                  <Image src={`${API_BASE_URL}${type.image}`} />
                 </Box> */}
               </Box>
             ))}
