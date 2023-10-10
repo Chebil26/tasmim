@@ -30,6 +30,7 @@ import {
   CardBody,
   StackDivider,
   Image,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 
@@ -41,6 +42,8 @@ import { fetchCategories } from "@/app/Redux/Features/categorySlice";
 import { fetchTypes } from "@/app/Redux/Features/typeSlice";
 import { RootState, AppDispatch } from "@/app/Redux/store";
 import { cp } from "fs";
+import { fetchAmbiances } from "@/app/Redux/Features/ambianceSlice";
+import Head from "@/app/head";
 
 const totalSteps = 4;
 
@@ -54,10 +57,19 @@ type Category = {
 type Type = {
   id: number;
   name: string;
-  ref: null | string;
-  description: null | string;
-  image: string; // Assuming the image can be a string or null
-  images: string[]; // Assuming images is an array of strings
+  ref: string;
+  description: string;
+  image: string;
+  images: string[];
+};
+
+type Ambiance = {
+  id: number;
+  name: string;
+  ref: string;
+  description: string;
+  image: string;
+  images: string[];
 };
 
 const StepForm: React.FC = () => {
@@ -221,10 +233,50 @@ const Step2: React.FC = () => {
 };
 
 const Step3: React.FC = () => {
+  const toast = useToast();
+
+  const dispatch: AppDispatch = useDispatch();
+  const ambiances: Ambiance[] = useSelector(
+    (state: RootState) => state.ambiance.ambiances
+  );
+  useEffect(() => {
+    dispatch(fetchAmbiances());
+  }, [dispatch]);
+
+  const handleChange = (value: any) => {
+    toast({
+      title: `Type Choisie  ${value}!`,
+      status: "success",
+      duration: 2000,
+    });
+  };
+
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue: "Particulier",
+    onChange: handleChange,
+  });
+
   return (
-    <VStack align="stretch">
-      <Text>Step 3 content</Text>
-    </VStack>
+    <Box padding={2}>
+      <SimpleGrid columns={3} spacing="20px">
+        {ambiances.map((ambiance) => (
+          <Box key={ambiance.id} padding={1}>
+            <Card>
+              <CardBody>
+                <Image
+                  src={`${API_BASE_URL}${ambiance.image}`}
+                  alt={ambiance.name}
+                />
+                <Stack mt="6" spacing="3">
+                  <Heading size="md">{ambiance.name}</Heading>
+                  <Text>{ambiance.description}</Text>
+                </Stack>
+              </CardBody>
+            </Card>
+          </Box>
+        ))}
+      </SimpleGrid>
+    </Box>
   );
 };
 
