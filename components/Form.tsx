@@ -31,6 +31,7 @@ import {
   StackDivider,
   Image,
   SimpleGrid,
+  RadioGroup,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 
@@ -44,8 +45,10 @@ import { RootState, AppDispatch } from "@/app/Redux/store";
 import { cp } from "fs";
 import { fetchAmbiances } from "@/app/Redux/Features/ambianceSlice";
 import Head from "@/app/head";
+import { fetchRevetements } from "@/app/Redux/Features/revetementSlice";
+import CustomRadio2 from "./CustomRadion2";
 
-const totalSteps = 4;
+const totalSteps = 8;
 
 type Category = {
   description: string;
@@ -60,6 +63,7 @@ type Type = {
   ref: string;
   description: string;
   image: string;
+  image_url: string;
   images: string[];
 };
 
@@ -69,8 +73,20 @@ type Ambiance = {
   ref: string;
   description: string;
   image: string;
+  image_url: string;
   images: string[];
 };
+
+type Revetement = {
+  id: number;
+  name: string;
+  ref: string;
+  description: string;
+  image_url: string;
+  images: string[];
+};
+
+let chosen_category: number = 1;
 
 const StepForm: React.FC = () => {
   const [step, setStep] = useState(1);
@@ -106,12 +122,20 @@ const StepForm: React.FC = () => {
         {step === 1 && <Heading mb={4}>Categorie</Heading>}
         {step === 2 && <Heading mb={4}>Type</Heading>}
         {step === 3 && <Heading mb={4}>Ambiance</Heading>}
-        {step === 4 && <Heading mb={4}>aaa</Heading>}
+        {step === 4 && <Heading mb={4}>Revetement</Heading>}
+        {step === 5 && <Heading mb={4}>...</Heading>}
+        {step === 6 && <Heading mb={4}>...</Heading>}
+        {step === 7 && <Heading mb={4}>...</Heading>}
+        {step === 8 && <Heading mb={4}>...</Heading>}
 
         {step === 1 && <Step1 />}
         {step === 2 && <Step2 />}
         {step === 3 && <Step3 />}
         {step === 4 && <Step4 />}
+        {step === 5 && <Step5 />}
+        {step === 6 && <Step6 />}
+        {step === 7 && <Step7 />}
+        {step === 8 && <Step8 />}
 
         <Box display="flex" justifyContent="alignItems">
           <Button onClick={prevStep} isDisabled={step === 1} marginRight={2}>
@@ -128,8 +152,6 @@ const StepForm: React.FC = () => {
 };
 
 const Step1: React.FC = () => {
-  const toast = useToast();
-
   const dispatch: AppDispatch = useDispatch();
   const categories: Category[] = useSelector(
     (state: RootState) => state.categories.categories
@@ -139,41 +161,31 @@ const Step1: React.FC = () => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const handleChange = (value: any) => {
-    toast({
-      title: `Categorie Choisie  ${value}!`,
-      status: "success",
-      duration: 2000,
-    });
-  };
-
   const { value, getRadioProps, getRootProps } = useRadioGroup({
     defaultValue: "Particulier",
-    onChange: handleChange,
   });
 
   return (
-    <>
+    <RadioGroup defaultValue="2">
       <Card>
         <CardBody>
-          <HStack divider={<StackDivider />} spacing="4">
+          <HStack divider={<StackDivider />} spacing="200">
             {categories.map((category) => (
-              <Box key={category.id}>
-                <Heading size="xs" textTransform="uppercase">
-                  <CustomRadio
-                    desc={category.name}
-                    {...getRadioProps({ value: category.name })}
-                  />
-                </Heading>
-                <Text pt="2" fontSize="sm">
-                  {category.description}
-                </Text>
-              </Box>
+              <Radio colorScheme="green" value={category.id.toString()}>
+                <Box key={category.id}>
+                  <Heading size="xs" textTransform="uppercase">
+                    {category.name}
+                  </Heading>
+                  <Text pt="2" fontSize="sm">
+                    {category.description}
+                  </Text>
+                </Box>
+              </Radio>
             ))}
           </HStack>
         </CardBody>
       </Card>
-    </>
+    </RadioGroup>
   );
 };
 
@@ -182,7 +194,6 @@ const Step2: React.FC = () => {
 
   const dispatch: AppDispatch = useDispatch();
   const types: Type[] = useSelector((state: RootState) => state.type.types);
-  console.log(types);
   useEffect(() => {
     dispatch(fetchTypes());
   }, [dispatch]);
@@ -263,10 +274,7 @@ const Step3: React.FC = () => {
           <Box key={ambiance.id} padding={1}>
             <Card>
               <CardBody>
-                <Image
-                  src={`${API_BASE_URL}${ambiance.image}`}
-                  alt={ambiance.name}
-                />
+                <Image src={ambiance.image_url} alt={ambiance.name} />
                 <Stack mt="6" spacing="3">
                   <Heading size="md">{ambiance.name}</Heading>
                   <Text>{ambiance.description}</Text>
@@ -281,6 +289,46 @@ const Step3: React.FC = () => {
 };
 
 const Step4: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const revetements: Revetement[] = useSelector(
+    (state: RootState) => state.revetement.revetements
+  );
+  console.log(revetements);
+  useEffect(() => {
+    dispatch(fetchRevetements());
+  }, [dispatch]);
+
+  const { value, getRadioProps, getRootProps } = useRadioGroup({
+    defaultValue: "Particulier",
+  });
+  return (
+    <Box>
+      <VStack>
+        {revetements.map((revetement) => (
+          <Box key={revetement.id} width="1000px" height="250px">
+            <Card>
+              <CardBody>
+                <HStack spacing={300}>
+                  <Image
+                    src={revetement.image_url}
+                    alt={revetement.name}
+                    boxSize="200px"
+                  />
+                  <Stack mt="6" spacing="3">
+                    <Heading size="md">{revetement.name}</Heading>
+                    <Text>{revetement.description}</Text>
+                  </Stack>
+                </HStack>
+              </CardBody>
+            </Card>
+          </Box>
+        ))}
+      </VStack>
+    </Box>
+  );
+};
+
+const Step5: React.FC = () => {
   return (
     <VStack align="stretch">
       <Text>Step 4 content</Text>
@@ -288,6 +336,29 @@ const Step4: React.FC = () => {
   );
 };
 
+const Step6: React.FC = () => {
+  return (
+    <VStack align="stretch">
+      <Text>Step 4 content</Text>
+    </VStack>
+  );
+};
+
+const Step7: React.FC = () => {
+  return (
+    <VStack align="stretch">
+      <Text>Step 4 content</Text>
+    </VStack>
+  );
+};
+
+const Step8: React.FC = () => {
+  return (
+    <VStack align="stretch">
+      <Text>Step 4 content</Text>
+    </VStack>
+  );
+};
 // Add more Step components (Step3, Step4, ..., Step9) similarly
 
 export default StepForm;
