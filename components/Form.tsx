@@ -47,6 +47,7 @@ import { fetchAmbiances } from "@/app/Redux/Features/ambianceSlice";
 import Head from "@/app/head";
 import { fetchRevetements } from "@/app/Redux/Features/revetementSlice";
 import CustomRadio2 from "./CustomRadion2";
+import { fetchPalettes } from "@/app/Redux/Features/paletteSlice";
 
 const totalSteps = 8;
 
@@ -65,6 +66,15 @@ type Type = {
   image: string;
   image_url: string;
   images: string[];
+};
+
+type Palette = {
+  id: number;
+  name: string;
+  ref: string;
+  description: string;
+  image: string;
+  image_url: string;
 };
 
 type Ambiance = {
@@ -248,31 +258,43 @@ const Step2: React.FC = () => {
 };
 
 const Step3: React.FC = () => {
-  const toast = useToast();
-
   const dispatch: AppDispatch = useDispatch();
   const ambiances: Ambiance[] = useSelector(
     (state: RootState) => state.ambiance.ambiances
   );
+
+  const palettes: Palette[] = useSelector(
+    (state: RootState) => state.palette.palettes
+  );
   useEffect(() => {
     dispatch(fetchAmbiances());
+    dispatch(fetchPalettes());
   }, [dispatch]);
-
-  const handleChange = (value: any) => {
-    toast({
-      title: `Type Choisie  ${value}!`,
-      status: "success",
-      duration: 2000,
-    });
-  };
-
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: "Particulier",
-    onChange: handleChange,
-  });
 
   return (
     <Box padding={2}>
+      <SimpleGrid columns={1}>
+        <RadioGroup>
+          {palettes.map((palette) => (
+            <Radio
+              key={palette.id}
+              colorScheme="teal"
+              value={palette.id.toString()}
+            >
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  {palette.name}
+                </Heading>
+                <Image
+                  src={palette.image_url}
+                  alt={palette.name}
+                  boxSize="200px"
+                />
+              </Box>
+            </Radio>
+          ))}
+        </RadioGroup>
+      </SimpleGrid>
       <SimpleGrid columns={3} spacing="20px">
         {ambiances.map((ambiance) => (
           <Box key={ambiance.id} padding={1}>
