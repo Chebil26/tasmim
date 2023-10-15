@@ -59,6 +59,7 @@ type Category = {
 };
 
 type Type = {
+  category: number;
   id: number;
   name: string;
   ref: string;
@@ -100,6 +101,7 @@ let chosen_category: number = 1;
 
 const StepForm: React.FC = () => {
   const [step, setStep] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(0);
 
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, totalSteps));
@@ -138,8 +140,13 @@ const StepForm: React.FC = () => {
         {step === 7 && <Heading mb={4}>...</Heading>}
         {step === 8 && <Heading mb={4}>...</Heading>}
 
-        {step === 1 && <Step1 />}
-        {step === 2 && <Step2 />}
+        {step === 1 && (
+          <Step1
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+        )}
+        {step === 2 && <Step2 selectedCategory={selectedCategory} />}
         {step === 3 && <Step3 />}
         {step === 4 && <Step4 />}
         {step === 5 && <Step5 />}
@@ -161,7 +168,11 @@ const StepForm: React.FC = () => {
   );
 };
 
-const Step1: React.FC = () => {
+const Step1: React.FC<{
+  selectedCategory: number;
+  setSelectedCategory: (categoryId: number) => void;
+}> = ({ selectedCategory, setSelectedCategory }) => {
+  // const [selectedCategory, setSelectedCategory] = useState(0);
   const dispatch: AppDispatch = useDispatch();
   const categories: Category[] = useSelector(
     (state: RootState) => state.categories.categories
@@ -171,9 +182,9 @@ const Step1: React.FC = () => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: "Particulier",
-  });
+  const handleCategoryChange = (category_id: number) => {
+    setSelectedCategory(category_id);
+  };
 
   return (
     <RadioGroup defaultValue="2">
@@ -184,6 +195,7 @@ const Step1: React.FC = () => {
               <Radio
                 key={category.id}
                 colorScheme="teal"
+                onChange={() => handleCategoryChange(category.id)}
                 value={category.id.toString()}
               >
                 <Box>
@@ -203,7 +215,9 @@ const Step1: React.FC = () => {
   );
 };
 
-const Step2: React.FC = () => {
+const Step2: React.FC<{ selectedCategory: number }> = ({
+  selectedCategory,
+}) => {
   const toast = useToast();
 
   const dispatch: AppDispatch = useDispatch();
@@ -211,6 +225,14 @@ const Step2: React.FC = () => {
   useEffect(() => {
     dispatch(fetchTypes());
   }, [dispatch]);
+  console.log(types);
+
+  useEffect(() => {
+    console.log("Selected category in Step2:", selectedCategory);
+  }, [selectedCategory]);
+  const filteredTypes = types.filter(
+    (obj) => obj.category === selectedCategory
+  );
 
   const handleChange = (value: any) => {
     toast({
@@ -234,7 +256,7 @@ const Step2: React.FC = () => {
 
         <CardBody>
           <Stack divider={<StackDivider />} spacing="4">
-            {types.map((type) => (
+            {filteredTypes.map((type) => (
               <Box key={type.id}>
                 <Heading size="xs" textTransform="uppercase">
                   <CustomRadio
@@ -245,9 +267,6 @@ const Step2: React.FC = () => {
                 <Text pt="2" fontSize="sm">
                   {type.description}
                 </Text>
-                {/* <Box boxSize="200px">
-                  <Image src={`${API_BASE_URL}${type.image}`} />
-                </Box> */}
               </Box>
             ))}
           </Stack>
