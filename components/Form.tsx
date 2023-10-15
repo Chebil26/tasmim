@@ -171,8 +171,12 @@ const Step1: React.FC = () => {
         <CardBody>
           <HStack divider={<StackDivider />} spacing="200">
             {categories.map((category) => (
-              <Radio colorScheme="green" value={category.id.toString()}>
-                <Box key={category.id}>
+              <Radio
+                key={category.id}
+                colorScheme="teal"
+                value={category.id.toString()}
+              >
+                <Box>
                   <Heading size="xs" textTransform="uppercase">
                     {category.name}
                   </Heading>

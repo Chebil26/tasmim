@@ -13,6 +13,7 @@ import furnitureReducer from "./Features/furnitureSlice";
 import optionReducer from "./Features/optionSlice";
 import questionReducer from "./Features/questionSlice";
 import orderReducer from "./Features/orderSlice";
+import paletteReducer from "./Features/paletteSlice";
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     categories: categoryReducer,
     color: colorReducer,
     type: typeReducer,
+    palette: paletteReducer,
     ambiance: ambianceReducer,
     revetement: revetementReducer,
     furnitureType: furnitureTypeReducer,

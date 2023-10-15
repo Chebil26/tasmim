@@ -2,7 +2,7 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 import WithSubnavigation from "@/components/Navbar";
-import SmallWithSocial from "@/components/Footer";
+import SmallWithSocial from "@/components/Footer2";
 
 import { Providers } from "./Redux/provider";
 const colors = {
