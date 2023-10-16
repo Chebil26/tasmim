@@ -48,6 +48,7 @@ import Head from "@/app/head";
 import { fetchRevetements } from "@/app/Redux/Features/revetementSlice";
 import CustomRadio2 from "./CustomRadion2";
 import { fetchPalettes } from "@/app/Redux/Features/paletteSlice";
+import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
 
 const totalSteps = 8;
 
@@ -94,6 +95,17 @@ type Revetement = {
   ref: string;
   description: string;
   image_url: string;
+  images: string[];
+};
+
+type FurnitureType = {
+  id: number;
+  name: string;
+  ref: string;
+  image: null | string;
+  image_url: string;
+  category: number;
+  type: number;
   images: string[];
 };
 
@@ -343,9 +355,6 @@ const Step4: React.FC = () => {
     dispatch(fetchRevetements());
   }, [dispatch]);
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: "Particulier",
-  });
   return (
     <Box>
       <VStack>
@@ -374,10 +383,31 @@ const Step4: React.FC = () => {
 };
 
 const Step5: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const furnituretypes: FurnitureType[] = useSelector(
+    (state: RootState) => state.furnitureType.furnitureTypes
+  );
+  useEffect(() => {
+    dispatch(fetchFurnitureTypes());
+  }, [dispatch]);
+
   return (
-    <VStack align="stretch">
-      <Text>Step 4 content</Text>
-    </VStack>
+    <Box>
+      {furnituretypes.map((furnitureType) => (
+        <Box key={furnitureType.id} width="1000px" height="250px">
+          <Card>
+            <CardBody>
+              <Heading size="md">{furnitureType.name}</Heading>
+              <Image
+                src={furnitureType.image_url}
+                alt={furnitureType.name}
+                boxSize="100px"
+              />
+            </CardBody>
+          </Card>
+        </Box>
+      ))}
+    </Box>
   );
 };
 
