@@ -15,6 +15,7 @@ import {
   IconProps,
   useColorModeValue,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 import { RootState } from "@/app/Redux/store";
 
@@ -45,6 +46,7 @@ export default function CallToActionWithVideo() {
             <Text
               as={"span"}
               position={"relative"}
+              color={"brand_blue.500"}
               _after={{
                 content: "''",
                 width: "full",
@@ -52,14 +54,14 @@ export default function CallToActionWithVideo() {
                 position: "absolute",
                 bottom: 1,
                 left: 0,
-                bg: "green.400",
+                bg: "brand_yellow.500",
                 zIndex: -1,
               }}
             >
               Write once,
             </Text>
             <br />
-            <Text as={"span"} color={"green.400"}>
+            <Text as={"span"} color={"brand_blue.500"}>
               use everywhere!
             </Text>
           </Heading>
@@ -77,17 +79,19 @@ export default function CallToActionWithVideo() {
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}
           >
-            <Button
-              rounded={"full"}
-              size={"lg"}
-              fontWeight={"normal"}
-              px={6}
-              colorScheme={"green"}
-              bg={"green.400"}
-              _hover={{ bg: "green.500" }}
-            >
-              Get started
-            </Button>
+            <Link href="/form">
+              <Button
+                rounded={"full"}
+                size={"lg"}
+                fontWeight={"normal"}
+                px={6}
+                colorScheme={"yellow"}
+                bg={"brand_yellow.500"}
+                _hover={{ bg: "yellow.300" }}
+              >
+                Commencez un projet
+              </Button>
+            </Link>
             <Button
               rounded={"full"}
               size={"lg"}
@@ -95,7 +99,7 @@ export default function CallToActionWithVideo() {
               px={6}
               leftIcon={<PlayIcon h={4} w={4} color={"gray.300"} />}
             >
-              How It Works
+              Comment ca marche
             </Button>
           </Stack>
         </Stack>
@@ -113,7 +117,7 @@ export default function CallToActionWithVideo() {
             top={"-20%"}
             left={0}
             zIndex={-1}
-            color={useColorModeValue("green.50", "green.400")}
+            color={useColorModeValue("yellow.50", "brand_yellow.400")}
           />
           <Box
             position={"relative"}

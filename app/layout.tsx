@@ -6,12 +6,13 @@ import SmallWithSocial from "@/components/Footer2";
 
 import { Providers } from "./Redux/provider";
 const colors = {
-  brand: {
-    900: "#024fc9",
-    800: "#146af5",
-    700: "#2977f2",
-    600: "#337df2",
-    500: "#4287f5",
+  brand_blue: {
+    500: "#001e6c",
+  },
+
+  brand_yellow: {
+    900: "#e8630a",
+    500: "#fcd900",
   },
 };
 
