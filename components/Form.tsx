@@ -230,10 +230,9 @@ const Step1: React.FC<{
     <RadioGroup>
       <SimpleGrid columns={2} spacing={5} minChildWidth="200px">
         {categories.map((category) => (
-          <Card>
+          <Card key={category.id}>
             <CardBody>
               <Radio
-                key={category.id}
                 colorScheme="brand_yellow"
                 onChange={() => handleCategoryChange(category.id)}
                 value={category.id.toString()}
@@ -264,7 +263,6 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
   useEffect(() => {
     dispatch(fetchTypes());
   }, [dispatch]);
-  console.log(types);
 
   useEffect(() => {
     console.log("Selected category in Step2:", selectedCategory);
@@ -286,10 +284,9 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
     <RadioGroup>
       <SimpleGrid minChildWidth="150px" spacing={10}>
         {filteredTypes.map((type) => (
-          <Card>
+          <Card key={type.id}>
             <CardBody>
               <Radio
-                key={type.id}
                 colorScheme="brand_yellow"
                 onChange={() => handleTypeChange(type.id)}
                 value={type.id.toString()}
