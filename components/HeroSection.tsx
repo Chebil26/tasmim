@@ -25,6 +25,7 @@ import {
   decrement,
   incrementByAmount,
 } from "@/app/Redux/Features/counterSlice";
+import ImageSlider from "./ImageSlider";
 
 export default function CallToActionWithVideo() {
   const count = useSelector((state: RootState) => state.counter.value);
@@ -127,19 +128,7 @@ export default function CallToActionWithVideo() {
             width={"full"}
             overflow={"hidden"}
           >
-            <IconButton
-              aria-label={"Play Button"}
-              variant={"ghost"}
-              _hover={{ bg: "transparent" }}
-              icon={<PlayIcon w={12} h={12} />}
-              size={"lg"}
-              color={"white"}
-              position={"absolute"}
-              left={"50%"}
-              top={"50%"}
-              transform={"translateX(-50%) translateY(-50%)"}
-            />
-            <Image
+            {/* <Image
               alt={"Hero Image"}
               fit={"cover"}
               align={"center"}
@@ -148,7 +137,10 @@ export default function CallToActionWithVideo() {
               src={
                 "https://firebasestorage.googleapis.com/v0/b/adeem-9a87d.appspot.com/o/maxresdefault.jpg?alt=media&token=80d5ae69-b9a1-4b17-b094-a004156144a8"
               }
-            />
+            /> */}
+            <div style={{ width: "100%", height: "100%" }}>
+              <ImageSlider />
+            </div>
           </Box>
         </Flex>
       </Stack>

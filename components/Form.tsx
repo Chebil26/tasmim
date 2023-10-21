@@ -50,6 +50,7 @@ import CustomRadio2 from "./CustomRadion2";
 import { fetchPalettes } from "@/app/Redux/Features/paletteSlice";
 import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
 import { updateOrderField } from "@/app/Redux/Features/orderFormSlice";
+import ImageSlider from "./ImageSlider";
 
 const totalSteps = 8;
 
@@ -264,9 +265,6 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
     dispatch(fetchTypes());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("Selected category in Step2:", selectedCategory);
-  }, [selectedCategory]);
   const filteredTypes =
     selectedCategory !== 0
       ? types.filter((obj) => obj.category === selectedCategory)
@@ -307,6 +305,9 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
 };
 
 const Step3: React.FC = () => {
+  const [palette, setPalette] = useState(0);
+  const [ambiance, setAmbiance] = useState(0);
+
   const dispatch: AppDispatch = useDispatch();
   const ambiances: Ambiance[] = useSelector(
     (state: RootState) => state.ambiance.ambiances
@@ -320,6 +321,19 @@ const Step3: React.FC = () => {
     dispatch(fetchPalettes());
   }, [dispatch]);
 
+  const handlePaletteChange = (palette_id: number) => {
+    setPalette(palette_id);
+  };
+
+  const handleAmbianceChange = (ambiance_id: number) => {
+    setAmbiance(ambiance_id);
+  };
+
+  useEffect(() => {
+    // dispatch(updateOrderField({ field: "palette", value: palette }));
+    dispatch(updateOrderField({ field: "ambiance", value: ambiance }));
+  }, [ambiance]);
+
   return (
     <Box padding={2}>
       <SimpleGrid columns={1} minChildWidth="100px">
@@ -327,8 +341,9 @@ const Step3: React.FC = () => {
           {palettes.map((palette) => (
             <Radio
               key={palette.id}
-              colorScheme="teal"
+              colorScheme="brand_yellow"
               value={palette.id.toString()}
+              onChange={() => handlePaletteChange(palette.id)}
             >
               <Box>
                 <Heading size="xs" textTransform="uppercase">
@@ -344,43 +359,71 @@ const Step3: React.FC = () => {
           ))}
         </RadioGroup>
       </SimpleGrid>
+
       <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
-        {ambiances.map((ambiance) => (
-          <Box key={ambiance.id} padding={1}>
-            <Card>
-              <CardBody>
-                <Image src={ambiance.image_url} alt={ambiance.name} />
-                <Stack mt="6" spacing="3">
-                  <Heading size="md">{ambiance.name}</Heading>
-                  <Text>{ambiance.description}</Text>
-                </Stack>
-              </CardBody>
-            </Card>
-          </Box>
-        ))}
+        <RadioGroup>
+          {ambiances.map((ambiance) => (
+            <Radio
+              key={ambiance.id}
+              value={ambiance.id.toString()}
+              colorScheme="brand_yellow"
+              onChange={() => handleAmbianceChange(ambiance.id)}
+            >
+              <Box padding={1}>
+                <Card>
+                  <CardBody>
+                    <Image
+                      src={ambiance.image_url}
+                      alt={ambiance.name}
+                      boxSize="200px"
+                    />
+                    <Stack mt="6" spacing="3">
+                      <Heading size="md">{ambiance.name}</Heading>
+                      <Text>{ambiance.description}</Text>
+                    </Stack>
+                  </CardBody>
+                </Card>
+              </Box>
+            </Radio>
+          ))}
+        </RadioGroup>
       </SimpleGrid>
     </Box>
   );
 };
 
 const Step4: React.FC = () => {
+  const [revetement, setRevetement] = useState(0);
+
   const dispatch: AppDispatch = useDispatch();
   const revetements: Revetement[] = useSelector(
     (state: RootState) => state.revetement.revetements
   );
-  console.log(revetements);
   useEffect(() => {
     dispatch(fetchRevetements());
   }, [dispatch]);
 
+  const handleRevetementChange = (revetement_id: number) => {
+    setRevetement(revetement_id);
+  };
+
+  useEffect(() => {
+    dispatch(updateOrderField({ field: "revetment", value: revetement }));
+  }, [revetement]);
+
   return (
-    <Box>
-      <VStack>
+    <SimpleGrid columns={1}>
+      <RadioGroup>
         {revetements.map((revetement) => (
-          <Box key={revetement.id} width="1000px" height="250px">
-            <Card>
-              <CardBody>
-                <HStack spacing={300}>
+          <Box key={revetement.id} height="250px">
+            <Radio
+              key={revetement.id}
+              value={revetement.id.toString()}
+              colorScheme="brand_yellow"
+              onChange={() => handleRevetementChange(revetement.id)}
+            >
+              <Card>
+                <CardBody>
                   <Image
                     src={revetement.image_url}
                     alt={revetement.name}
@@ -390,13 +433,13 @@ const Step4: React.FC = () => {
                     <Heading size="md">{revetement.name}</Heading>
                     <Text>{revetement.description}</Text>
                   </Stack>
-                </HStack>
-              </CardBody>
-            </Card>
+                </CardBody>
+              </Card>
+            </Radio>
           </Box>
         ))}
-      </VStack>
-    </Box>
+      </RadioGroup>
+    </SimpleGrid>
   );
 };
 
@@ -410,9 +453,9 @@ const Step5: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <Box>
+    <SimpleGrid columns={1}>
       {furnituretypes.map((furnitureType) => (
-        <Box key={furnitureType.id} width="1000px" height="250px">
+        <Box key={furnitureType.id} height="300px">
           <Card>
             <CardBody>
               <Heading size="md">{furnitureType.name}</Heading>
@@ -425,14 +468,14 @@ const Step5: React.FC = () => {
           </Card>
         </Box>
       ))}
-    </Box>
+    </SimpleGrid>
   );
 };
 
 const Step6: React.FC = () => {
   return (
     <VStack align="stretch">
-      <Text>Step 4 content</Text>
+      <Text>Step 6 content</Text>
     </VStack>
   );
 };
@@ -440,7 +483,7 @@ const Step6: React.FC = () => {
 const Step7: React.FC = () => {
   return (
     <VStack align="stretch">
-      <Text>Step 4 content</Text>
+      <Text>Step 6 content</Text>
     </VStack>
   );
 };
@@ -452,6 +495,5 @@ const Step8: React.FC = () => {
     </VStack>
   );
 };
-// Add more Step components (Step3, Step4, ..., Step9) similarly
 
 export default StepForm;
