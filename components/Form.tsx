@@ -49,6 +49,7 @@ import { fetchRevetements } from "@/app/Redux/Features/revetementSlice";
 import CustomRadio2 from "./CustomRadion2";
 import { fetchPalettes } from "@/app/Redux/Features/paletteSlice";
 import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
+import { updateOrderField } from "@/app/Redux/Features/orderFormSlice";
 
 const totalSteps = 8;
 
@@ -109,11 +110,30 @@ type FurnitureType = {
   images: string[];
 };
 
+type OrderForm = {
+  id: number | null;
+  ref: string;
+  description: string;
+  user: number | null;
+  category: number | null;
+  type: number | null;
+  ambiance: number | null;
+  revetment: number | null;
+  images: any[];
+  colors: any[];
+  furnitures: any[];
+  options: number[];
+  questions: any[];
+};
+
 let chosen_category: number = 1;
 
 const StepForm: React.FC = () => {
   const [step, setStep] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(0);
+  const dispatch: AppDispatch = useDispatch();
+  const orderForm = useSelector((state: RootState) => state.orderForm);
+  console.log(orderForm);
 
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, totalSteps));
@@ -126,7 +146,11 @@ const StepForm: React.FC = () => {
   return (
     <Box p={8} maxWidth={1200} mx="auto">
       <VStack align="stretch">
-        <Progress value={(step / totalSteps) * 100} mb={4} />
+        <Progress
+          value={(step / totalSteps) * 100}
+          mb={4}
+          colorScheme="brand_yellow"
+        />
         {/* <Stack>
           <Stepper size="sm" index={step} gap="0">
             {steps.map((step, index) => (
@@ -198,15 +222,19 @@ const Step1: React.FC<{
     setSelectedCategory(category_id);
   };
 
+  useEffect(() => {
+    dispatch(updateOrderField({ field: "category", value: selectedCategory }));
+  }, [selectedCategory]);
+
   return (
-    <RadioGroup defaultValue="2">
-      <Card>
-        <CardBody>
-          <HStack divider={<StackDivider />} spacing="200">
-            {categories.map((category) => (
+    <RadioGroup>
+      <SimpleGrid columns={2} spacing={5} minChildWidth="200px">
+        {categories.map((category) => (
+          <Card>
+            <CardBody>
               <Radio
                 key={category.id}
-                colorScheme="teal"
+                colorScheme="brand_yellow"
                 onChange={() => handleCategoryChange(category.id)}
                 value={category.id.toString()}
               >
@@ -219,10 +247,10 @@ const Step1: React.FC<{
                   </Text>
                 </Box>
               </Radio>
-            ))}
-          </HStack>
-        </CardBody>
-      </Card>
+            </CardBody>
+          </Card>
+        ))}
+      </SimpleGrid>
     </RadioGroup>
   );
 };
@@ -230,8 +258,7 @@ const Step1: React.FC<{
 const Step2: React.FC<{ selectedCategory: number }> = ({
   selectedCategory,
 }) => {
-  const toast = useToast();
-
+  const [type, setType] = useState(0);
   const dispatch: AppDispatch = useDispatch();
   const types: Type[] = useSelector((state: RootState) => state.type.types);
   useEffect(() => {
@@ -242,49 +269,43 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
   useEffect(() => {
     console.log("Selected category in Step2:", selectedCategory);
   }, [selectedCategory]);
-  const filteredTypes = types.filter(
-    (obj) => obj.category === selectedCategory
-  );
+  const filteredTypes =
+    selectedCategory !== 0
+      ? types.filter((obj) => obj.category === selectedCategory)
+      : types;
 
-  const handleChange = (value: any) => {
-    toast({
-      title: `Type Choisie  ${value}!`,
-      status: "success",
-      duration: 2000,
-    });
+  const handleTypeChange = (type_id: number) => {
+    setType(type_id);
   };
 
-  const { value, getRadioProps, getRootProps } = useRadioGroup({
-    defaultValue: "Particulier",
-    onChange: handleChange,
-  });
+  useEffect(() => {
+    dispatch(updateOrderField({ field: "type", value: type }));
+  }, [type]);
 
   return (
-    <>
-      <Card>
-        <CardHeader>
-          <Heading size="md">Type</Heading>
-        </CardHeader>
-
-        <CardBody>
-          <Stack divider={<StackDivider />} spacing="4">
-            {filteredTypes.map((type) => (
-              <Box key={type.id}>
-                <Heading size="xs" textTransform="uppercase">
-                  <CustomRadio
-                    desc={type.name}
-                    {...getRadioProps({ value: type.name })}
-                  />
-                </Heading>
-                <Text pt="2" fontSize="sm">
-                  {type.description}
-                </Text>
-              </Box>
-            ))}
-          </Stack>
-        </CardBody>
-      </Card>
-    </>
+    <RadioGroup>
+      <SimpleGrid minChildWidth="150px" spacing={10}>
+        {filteredTypes.map((type) => (
+          <Card>
+            <CardBody>
+              <Radio
+                key={type.id}
+                colorScheme="brand_yellow"
+                onChange={() => handleTypeChange(type.id)}
+                value={type.id.toString()}
+              >
+                <Box>
+                  <Heading size="xs" textTransform="uppercase">
+                    {type.name}
+                  </Heading>
+                  <Image src={type.image_url} alt={type.name} boxSize="200px" />
+                </Box>
+              </Radio>
+            </CardBody>
+          </Card>
+        ))}
+      </SimpleGrid>
+    </RadioGroup>
   );
 };
 
@@ -304,7 +325,7 @@ const Step3: React.FC = () => {
 
   return (
     <Box padding={2}>
-      <SimpleGrid columns={1}>
+      <SimpleGrid columns={1} minChildWidth="100px">
         <RadioGroup>
           {palettes.map((palette) => (
             <Radio
@@ -326,7 +347,7 @@ const Step3: React.FC = () => {
           ))}
         </RadioGroup>
       </SimpleGrid>
-      <SimpleGrid columns={3} spacing="20px">
+      <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
         {ambiances.map((ambiance) => (
           <Box key={ambiance.id} padding={1}>
             <Card>

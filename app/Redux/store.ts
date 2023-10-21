@@ -14,6 +14,7 @@ import optionReducer from "./Features/optionSlice";
 import questionReducer from "./Features/questionSlice";
 import orderReducer from "./Features/orderSlice";
 import paletteReducer from "./Features/paletteSlice";
+import orderFormReducer from "./Features/orderFormSlice";
 
 export const store = configureStore({
   reducer: {
@@ -30,11 +31,10 @@ export const store = configureStore({
     option: optionReducer,
     question: questionReducer,
     order: orderReducer,
+
+    orderForm: orderFormReducer,
   },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-// export type RootState = ReturnType<typeof store.getState>;
-// export type AppDispatch = typeof store.dispatch;
