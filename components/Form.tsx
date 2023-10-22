@@ -412,10 +412,10 @@ const Step4: React.FC = () => {
   }, [revetement]);
 
   return (
-    <SimpleGrid columns={1}>
-      <RadioGroup>
+    <RadioGroup>
+      <SimpleGrid columns={1}>
         {revetements.map((revetement) => (
-          <Box key={revetement.id} height="250px">
+          <Box key={revetement.id}>
             <Radio
               key={revetement.id}
               value={revetement.id.toString()}
@@ -438,8 +438,8 @@ const Step4: React.FC = () => {
             </Radio>
           </Box>
         ))}
-      </RadioGroup>
-    </SimpleGrid>
+      </SimpleGrid>
+    </RadioGroup>
   );
 };
 

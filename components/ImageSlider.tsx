@@ -11,26 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 const ImageSlider: React.FC = () => {
-  const [sliderValue, setSliderValue] = useState<number>(50);
-
-  const imageContainerStyle: React.CSSProperties = {
-    width: "300px", // Adjust the width as needed
-    height: "300px", // Adjust the height as needed
-    overflow: "hidden",
-    position: "relative",
-  };
-
-  const image1Style: React.CSSProperties = {
-    width: "100%",
-  };
-
-  const image2Style: React.CSSProperties = {
-    width: "100%",
-    position: "absolute",
-    top: "0",
-    left: "0",
-    clipPath: `inset(0% ${100 - sliderValue}% 0% 0%)`,
-  };
+  const [sliderValue, setSliderValue] = useState<number>(30);
 
   return (
     <Box boxSize={400}>
