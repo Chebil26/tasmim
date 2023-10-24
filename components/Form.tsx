@@ -1,7 +1,6 @@
 // StepForm.tsx
 
 import React, { useState } from "react";
-import { API_BASE_URL } from "@/config";
 import {
   Box,
   Button,
@@ -10,49 +9,24 @@ import {
   Progress,
   Text,
   Stack,
-  Stepper,
-  Step,
-  StepIndicator,
-  StepStatus,
-  StepSeparator,
-  StepIcon,
-  Flex,
-  useColorModeValue,
-  Icon,
-  FormLabel,
-  FormControl,
-  Checkbox,
-  useRadioGroup,
-  HStack,
   Radio,
   Card,
-  CardHeader,
   CardBody,
-  StackDivider,
   Image,
   SimpleGrid,
   RadioGroup,
 } from "@chakra-ui/react";
-import { CheckIcon } from "@chakra-ui/icons";
 
-import CustomRadio from "./Radio";
-import { useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/app/Redux/Features/categorySlice";
 import { fetchTypes } from "@/app/Redux/Features/typeSlice";
 import { RootState, AppDispatch } from "@/app/Redux/store";
-import { cp } from "fs";
 import { fetchAmbiances } from "@/app/Redux/Features/ambianceSlice";
-import Head from "@/app/head";
 import { fetchRevetements } from "@/app/Redux/Features/revetementSlice";
-import CustomRadio2 from "./CustomRadion2";
 import { fetchPalettes } from "@/app/Redux/Features/paletteSlice";
 import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
 import { updateOrderField } from "@/app/Redux/Features/orderFormSlice";
-import ImageSlider from "./ImageSlider";
-
-const totalSteps = 8;
 
 type Category = {
   description: string;
@@ -130,11 +104,17 @@ type OrderForm = {
 let chosen_category: number = 1;
 
 const StepForm: React.FC = () => {
+  const totalSteps = 8;
+
   const [step, setStep] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(0);
+  const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
+
+  const [nextButtonLabel, setNextButtonLabel] = useState("Next");
   const dispatch: AppDispatch = useDispatch();
-  const orderForm = useSelector((state: RootState) => state.orderForm);
-  console.log(orderForm);
+  const orderForm: OrderForm = useSelector(
+    (state: RootState) => state.orderForm
+  );
 
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, totalSteps));
@@ -142,6 +122,21 @@ const StepForm: React.FC = () => {
 
   const prevStep = () => {
     setStep((prevStep) => Math.max(prevStep - 1, 1));
+  };
+
+  const handleNextClick = () => {
+    if (step < totalSteps) {
+      nextStep();
+      if (step === 1) {
+        setNextButtonLabel("Next to Step 2");
+      } else if (step === 2) {
+        setNextButtonLabel("Next to Step 3");
+      } else if (step === 3) {
+        setNextButtonLabel("Next to Step 4");
+      }
+    } else {
+      // Add more conditions as needed
+    }
   };
 
   return (
@@ -196,8 +191,11 @@ const StepForm: React.FC = () => {
             Previous
           </Button>
 
-          <Button onClick={nextStep} isDisabled={step === totalSteps}>
-            Next
+          <Button
+            onClick={handleNextClick}
+            isDisabled={step === totalSteps || nextButtonDisabled}
+          >
+            {step < totalSteps ? nextButtonLabel : "Finish"}
           </Button>
         </Box>
       </VStack>
