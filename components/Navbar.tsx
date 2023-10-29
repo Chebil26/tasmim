@@ -32,7 +32,7 @@ export default function WithSubnavigation() {
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
-        maxH={"85px"}
+        maxH={"200px"}
         py={{ base: 2 }}
         px={{ base: 4, md: 20, lg: 32 }}
         borderBottom={1}
@@ -63,8 +63,8 @@ export default function WithSubnavigation() {
             <Button as="a" href="/" variant={"link"}>
               <Image
                 alt={"dzecko logo"}
-                w={"20%"}
-                h={"5%"}
+                w={"40%"}
+                h={"10%"}
                 src={"dzecko_logo.png"}
               />
             </Button>

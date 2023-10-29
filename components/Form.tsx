@@ -15,7 +15,11 @@ import {
   Image,
   SimpleGrid,
   RadioGroup,
+  Flex,
+  GridItem,
+  Grid,
 } from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -128,11 +132,11 @@ const StepForm: React.FC = () => {
     if (step < totalSteps) {
       nextStep();
       if (step === 1) {
-        setNextButtonLabel("Next to Step 2");
+        setNextButtonLabel("Next  2");
       } else if (step === 2) {
-        setNextButtonLabel("Next to Step 3");
+        setNextButtonLabel("Next  3");
       } else if (step === 3) {
-        setNextButtonLabel("Next to Step 4");
+        setNextButtonLabel("Next  4");
       }
     } else {
       // Add more conditions as needed
@@ -140,69 +144,62 @@ const StepForm: React.FC = () => {
   };
 
   return (
-    <Box p={8} maxWidth={1200} mx="auto">
-      <VStack align="stretch">
-        <Progress
-          value={(step / totalSteps) * 100}
-          mb={4}
-          colorScheme="brand_yellow"
-        />
-        {/* <Stack>
-          <Stepper size="sm" index={step} gap="0">
-            {steps.map((step, index) => (
-              <Step key={index} gap="0">
-                <StepIndicator>
-                  <StepStatus complete={<StepIcon />} />
-                </StepIndicator>
-                <StepSeparator _horizontal={{ ml: "0" }} />
-              </Step>
-            ))}
-          </Stepper>
-          <Text>
-            Step {activeStep + 1}: <b>{activeStepText}</b>
-          </Text>
-        </Stack> */}
-
-        {step === 1 && <Heading mb={4}>Categorie</Heading>}
-        {step === 2 && <Heading mb={4}>Type</Heading>}
-        {step === 3 && <Heading mb={4}>Ambiance</Heading>}
-        {step === 4 && <Heading mb={4}>Revetement</Heading>}
-        {step === 5 && <Heading mb={4}>...</Heading>}
-        {step === 6 && <Heading mb={4}>...</Heading>}
-        {step === 7 && <Heading mb={4}>...</Heading>}
-        {step === 8 && <Heading mb={4}>...</Heading>}
-
-        {step === 1 && (
-          <Step1
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
-        )}
-        {step === 2 && <Step2 selectedCategory={selectedCategory} />}
-        {step === 3 && <Step3 />}
-        {step === 4 && <Step4 />}
-        {step === 5 && <Step5 />}
-        {step === 6 && <Step6 />}
-        {step === 7 && <Step7 />}
-        {step === 8 && <Step8 />}
-
-        <Box display="flex" justifyContent="alignItems">
-          <Button onClick={prevStep} isDisabled={step === 1} marginRight={2}>
-            Previous
+    <Box padding={8} maxWidth={1600} mx="auto">
+      <Grid templateColumns="1fr 3fr 1fr">
+        <GridItem>
+          <Button onClick={prevStep} isDisabled={step === 1}>
+            <ArrowBackIcon boxSize={4} />
           </Button>
+        </GridItem>
+        <GridItem>
+          <Progress
+            value={(step / totalSteps) * 100}
+            mb={4}
+            colorScheme="brand_yellow"
+          />
 
+          {step === 1 && <Heading mb={4}>Categorie</Heading>}
+          {step === 2 && <Heading mb={4}>Type</Heading>}
+          {step === 3 && <Heading mb={4}>Ambiance</Heading>}
+          {step === 4 && <Heading mb={4}>Revetement</Heading>}
+
+          {step === 1 && (
+            <Step1
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+          )}
+          {step === 2 && <Step2 selectedCategory={selectedCategory} />}
+          {step === 3 && <Step3 />}
+          {step === 4 && <Step4 />}
+
+          <Flex justifyContent="space-between" alignItems="center">
+            <Button onClick={prevStep} isDisabled={step === 1} marginRight={2}>
+              <ArrowBackIcon boxSize={4} />
+              Previous
+            </Button>
+
+            <Button
+              onClick={handleNextClick}
+              isDisabled={step === totalSteps || nextButtonDisabled}
+            >
+              {step < totalSteps ? nextButtonLabel : "Finish"}
+              <ArrowForwardIcon boxSize={4} />
+            </Button>
+          </Flex>
+        </GridItem>
+        <GridItem>
           <Button
             onClick={handleNextClick}
             isDisabled={step === totalSteps || nextButtonDisabled}
           >
-            {step < totalSteps ? nextButtonLabel : "Finish"}
+            <ArrowForwardIcon boxSize={4} />
           </Button>
-        </Box>
-      </VStack>
+        </GridItem>
+      </Grid>
     </Box>
   );
 };
-
 const Step1: React.FC<{
   selectedCategory: number;
   setSelectedCategory: (categoryId: number) => void;
@@ -334,7 +331,7 @@ const Step3: React.FC = () => {
 
   return (
     <Box padding={2}>
-      <SimpleGrid columns={1} minChildWidth="100px">
+      <SimpleGrid columns={1} minChildWidth="600px">
         <RadioGroup>
           {palettes.map((palette) => (
             <Radio

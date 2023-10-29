@@ -1,6 +1,6 @@
 // ImageSlider.tsx
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Image,
@@ -12,6 +12,41 @@ import {
 
 const ImageSlider: React.FC = () => {
   const [sliderValue, setSliderValue] = useState<number>(30);
+  const [autoSlideInterval, setAutoSlideInterval] =
+    useState<NodeJS.Timer | null>(null);
+  const [isAutoSliding, setIsAutoSliding] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Start automatic slider movement
+    if (!isAutoSliding) {
+      const interval = setInterval(() => {
+        setSliderValue((prevValue) => {
+          // Increment the slider value by a certain amount (e.g., 1)
+          const newValue = prevValue + 0.1;
+          return newValue > 100 ? 0 : newValue; // Loop back to 0 when max value is reached
+        });
+      }, 15); // Adjust the interval duration as needed
+
+      setAutoSlideInterval(interval);
+      setIsAutoSliding(true);
+    }
+
+    return () => {
+      // Clear the interval when the component unmounts
+      if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+      }
+    };
+  }, [autoSlideInterval, isAutoSliding]);
+
+  const handleSliderClick = () => {
+    // Stop automatic slider movement when the user clicks on the slider
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+      setAutoSlideInterval(null);
+      setIsAutoSliding(false);
+    }
+  };
 
   return (
     <Box boxSize={400}>
@@ -20,6 +55,7 @@ const ImageSlider: React.FC = () => {
         max={100}
         value={sliderValue}
         onChange={(value) => setSliderValue(value)}
+        onClick={handleSliderClick} // Handle user clicks
       >
         <SliderTrack bg="gray.200">
           <SliderFilledTrack bg="brand_yellow.500" />
