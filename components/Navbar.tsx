@@ -280,7 +280,7 @@ interface NavItem {
 
 const NAV_ITEMS: Array<NavItem> = [
   {
-    label: "Inspiration",
+    label: "Nos Services",
     children: [
       {
         label: "Explore Design Work",
@@ -296,7 +296,19 @@ const NAV_ITEMS: Array<NavItem> = [
   },
 
   {
-    label: "Hire Designers",
+    label: "Portfolio",
+    href: "#",
+  },
+  {
+    label: "Catalogue",
+    href: "#",
+  },
+  {
+    label: "Inspirations",
+    href: "#",
+  },
+  {
+    label: "Contact",
     href: "#",
   },
 ];

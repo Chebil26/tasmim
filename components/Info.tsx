@@ -20,17 +20,28 @@ function StatsCard(props: StatsCardProps) {
     <Stat
       px={{ base: 4, md: 8 }}
       py={"5"}
-      shadow={"xl"}
-      border={"1px solid"}
-      borderColor={useColorModeValue("gray.800", "gray.500")}
-      rounded={"lg"}
+      borderTop={"2px"}
+      borderColor={useColorModeValue("brand_blue.500", "brand_blue.500")}
     >
-      <StatLabel fontWeight={"medium"} isTruncated>
-        {title}
-      </StatLabel>
-      <StatNumber fontSize={"2xl"} fontWeight={"medium"}>
+      <StatLabel
+        fontSize={"xl"}
+        fontWeight={"medium"}
+        isTruncated
+        color="brand_blue.500"
+      >
+        <Box
+          backgroundColor="brand_yellow.500"
+          color="brand_blue.500"
+          p={2}
+          m={2}
+          borderRadius="md"
+          display="inline-block"
+          width="30px"
+        >
+          {title}
+        </Box>
         {stat}
-      </StatNumber>
+      </StatLabel>
     </Stat>
   );
 }
@@ -39,17 +50,28 @@ export default function CompanyInfo() {
   return (
     <Box maxW="7xl" mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       <chakra.h1
-        textAlign={"center"}
+        color={"brand_blue.500"}
+        textAlign={"left"}
         fontSize={"4xl"}
         py={10}
         fontWeight={"bold"}
       >
-        What is our company doing?
+        <Box
+          as="span"
+          backgroundColor="brand_yellow.500"
+          borderRadius="md"
+          pl={2}
+          pt={1}
+          pb={1}
+        >
+          Co
+        </Box>
+        mment ?
       </chakra.h1>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
-        <StatsCard title={"We serve"} stat={"50,000 people"} />
-        <StatsCard title={"In"} stat={"30 different countries"} />
-        <StatsCard title={"Who speak"} stat={"100 different languages"} />
+        <StatsCard title={"1"} stat={"Montrez nous vos besoins"} />
+        <StatsCard title={"2"} stat={"Discutez avec nos designers"} />
+        <StatsCard title={"3"} stat={"Recevez votre commande"} />
       </SimpleGrid>
     </Box>
   );
