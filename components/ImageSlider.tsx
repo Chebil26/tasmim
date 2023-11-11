@@ -10,7 +10,15 @@ import {
   SliderThumb,
 } from "@chakra-ui/react";
 
-const ImageSlider: React.FC = () => {
+interface ImageSliderProps {
+  image_url_1: string;
+  image_url_2: string;
+}
+
+const ImageSlider: React.FC<ImageSliderProps> = ({
+  image_url_1,
+  image_url_2,
+}) => {
   const [sliderValue, setSliderValue] = useState<number>(30);
   const [autoSlideInterval, setAutoSlideInterval] =
     useState<NodeJS.Timer | null>(null);
@@ -23,7 +31,7 @@ const ImageSlider: React.FC = () => {
         setSliderValue((prevValue) => {
           // Increment the slider value by a certain amount (e.g., 1)
           const newValue = prevValue + 0.1;
-          return newValue > 100 ? 0 : newValue; // Loop back to 0 when max value is reached
+          return newValue > 100 ? 0 : newValue; // Loop back to 0 when the max value is reached
         });
       }, 15); // Adjust the interval duration as needed
 
@@ -49,29 +57,32 @@ const ImageSlider: React.FC = () => {
   };
 
   return (
-    <Box boxSize={400}>
+    <Box
+      position={"relative"}
+      height={"400px"}
+      rounded={"2xl"}
+      boxShadow={"2xl"}
+      width={"full"}
+      overflow={"hidden"}
+    >
       <Slider
         min={0}
         max={100}
         value={sliderValue}
         onChange={(value) => setSliderValue(value)}
-        onClick={handleSliderClick} // Handle user clicks
+        onClick={handleSliderClick}
       >
         <SliderTrack bg="gray.200">
           <SliderFilledTrack bg="brand_yellow.500" />
         </SliderTrack>
-        <SliderThumb boxSize={4} bg="brand_yellow.500"></SliderThumb>
+        {/* <SliderThumb boxSize={4} bg="brand_yellow.500"></SliderThumb> */}
       </Slider>
       <Box position="relative">
+        <Image src={image_url_1} alt="Image 1" w="100%" />
         <Image
-          src="https://dlomnkdfvdzwzajbgpxu.supabase.co/storage/v1/object/public/dzeko_server_images/Howie-Kitchen-Before%20(1).jpg"
-          alt="Image 1"
-          w="100%" // Width set to 100%
-        />
-        <Image
-          src="https://dlomnkdfvdzwzajbgpxu.supabase.co/storage/v1/object/public/dzeko_server_images/cuisine_image87.jpg"
+          src={image_url_2}
           alt="Image 2"
-          w="100%" // Width set to 100%
+          w="100%"
           position="absolute"
           top="0"
           left="0"
