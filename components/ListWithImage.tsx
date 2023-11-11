@@ -9,6 +9,7 @@ import {
   Container,
   Stack,
   VStack,
+  chakra,
 } from "@chakra-ui/react";
 
 interface ListItemData {
@@ -32,7 +33,16 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
   };
 
   return (
-    <Container>
+    <Container maxW={"4xl"} p={20}>
+      <chakra.h1
+        color={"brand_blue.500"}
+        textAlign={"left"}
+        fontSize={"3xl"}
+        py={5}
+        fontWeight={"bold"}
+      >
+        Ce que vous recevez:
+      </chakra.h1>
       <Stack direction="row" spacing={16}>
         <Box
           borderLeftWidth={1}
@@ -40,7 +50,7 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
           paddingY={2}
           paddingRight={4}
         >
-          <List spacing={3} minWidth={200}>
+          <List spacing={3} minWidth={300}>
             {items.map((item) => (
               <ListItem
                 key={item.id}

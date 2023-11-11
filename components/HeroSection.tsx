@@ -64,21 +64,7 @@ export default function CallToActionWithVideo() {
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={{ base: "column", sm: "row" }}
-          >
-            <Link href="/form">
-              <Button
-                rounded={"full"}
-                size={"lg"}
-                fontWeight={"normal"}
-                px={6}
-                colorScheme={"yellow"}
-                bg={"brand_yellow.500"}
-                _hover={{ bg: "yellow.300" }}
-              >
-                Commencez un projet
-              </Button>
-            </Link>
-          </Stack>
+          ></Stack>
         </Stack>
         <Flex
           flex={1}

@@ -3,6 +3,7 @@ import CallToActionWithAnnotation from "@/components/HeroSection";
 import SimpleThreeColumns from "@/components/Features";
 import CompanyInfo from "@/components/Info";
 import WhatYouGet from "@/components/WhatYouGet";
+import StartProject from "@/components/StartProject";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <CallToActionWithAnnotation />
       <CompanyInfo />
       <WhatYouGet />
+      <StartProject />
       <SimpleThreeColumns />
     </>
   );

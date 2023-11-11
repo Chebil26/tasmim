@@ -1,6 +1,6 @@
 // Example usage in another component or page
 import React from "react";
-import { ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider, Container, chakra } from "@chakra-ui/react";
 import ListWithImage from "./ListWithImage";
 
 const WhatYouGet: React.FC = () => {
@@ -36,9 +36,9 @@ const WhatYouGet: React.FC = () => {
   ];
 
   return (
-    <ChakraProvider>
+    <Box>
       <ListWithImage items={items} />
-    </ChakraProvider>
+    </Box>
   );
 };
 
