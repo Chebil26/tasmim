@@ -5,6 +5,7 @@ import WithSubnavigation from "@/components/Navbar";
 import SmallWithSocial from "@/components/Footer2";
 
 import { Providers } from "./Redux/provider";
+import AuthProviders from "@/components/Providers";
 const colors = {
   brand_blue: {
     500: "#001e6c",
@@ -27,17 +28,19 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <Providers>
-          {/* for redux toolkit */}
-          <ChakraProvider theme={theme}>
-            {/* for charkra ui */}
-            <div>
-              <WithSubnavigation /> {/* navbar */}
-              {children}
-              <SmallWithSocial /> {/* footer */}
-            </div>
-          </ChakraProvider>
-        </Providers>
+        <AuthProviders>
+          <Providers>
+            {/* for redux toolkit */}
+            <ChakraProvider theme={theme}>
+              {/* for charkra ui */}
+              <div>
+                <WithSubnavigation /> {/* navbar */}
+                {children}
+                <SmallWithSocial /> {/* footer */}
+              </div>
+            </ChakraProvider>
+          </Providers>
+        </AuthProviders>
       </body>
     </html>
   );
