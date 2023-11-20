@@ -23,6 +23,8 @@ const StartProject = () => {
 const Banner = () => {
   return (
     <Container>
+    <Link href="/form" >
+
       <Button
         color="brand_blue.500"
         variant="solid"
@@ -38,6 +40,7 @@ const Banner = () => {
           <Icon as={ArrowForwardIcon} ml={2} />
         </VStack>
       </Button>
+      </Link>
     </Container>
   );
 };

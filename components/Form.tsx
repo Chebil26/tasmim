@@ -216,6 +216,7 @@ const Step1: React.FC<{
 
   const handleCategoryChange = (category_id: number) => {
     setSelectedCategory(category_id);
+    console.log(category_id)
   };
 
   useEffect(() => {
@@ -223,16 +224,14 @@ const Step1: React.FC<{
   }, [selectedCategory]);
 
   return (
-    <RadioGroup>
       <SimpleGrid columns={2} spacing={5} minChildWidth="200px">
         {categories.map((category) => (
           <Card key={category.id}>
-            <CardBody>
-              <Radio
-                colorScheme="brand_yellow"
-                onChange={() => handleCategoryChange(category.id)}
-                value={category.id.toString()}
-              >
+            <CardBody
+                  onClick={() => handleCategoryChange(category.id)}
+                  borderWidth={selectedCategory === category.id ? "2px" : ""}
+                  borderColor={selectedCategory === category.id ? "yellow.500" : ""}
+                  backgroundColor={selectedCategory === category.id ? 'blue.500' : ''}>
                 <Box>
                   <Heading size="xs" textTransform="uppercase">
                     {category.name}
@@ -241,12 +240,10 @@ const Step1: React.FC<{
                     {category.description}
                   </Text>
                 </Box>
-              </Radio>
             </CardBody>
           </Card>
         ))}
       </SimpleGrid>
-    </RadioGroup>
   );
 };
 
