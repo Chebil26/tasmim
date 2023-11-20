@@ -23,21 +23,23 @@ const StartProject = () => {
 const Banner = () => {
   return (
     <Container>
-      <Button
-        color="brand_blue.500"
-        variant="solid"
-        size="lg"
-        rounded="md"
-        mb={{ base: 2, sm: 0 }}
-        lineHeight={1}
-        backgroundColor="brand_yellow.500"
-        _hover={{ backgroundColor: "yellow.300" }}
-      >
-        <VStack>
-          <Text>Commencez votre projet !</Text>
-          <Icon as={ArrowForwardIcon} ml={2} />
-        </VStack>
-      </Button>
+      <Link href="/form">
+        <Button
+          color="brand_blue.500"
+          variant="solid"
+          size="lg"
+          rounded="md"
+          mb={{ base: 2, sm: 0 }}
+          lineHeight={1}
+          backgroundColor="brand_yellow.500"
+          _hover={{ backgroundColor: "yellow.300" }}
+        >
+          <VStack>
+            <Text>Commencez votre projet !</Text>
+            <Icon as={ArrowForwardIcon} ml={2} />
+          </VStack>
+        </Button>
+      </Link>
     </Container>
   );
 };

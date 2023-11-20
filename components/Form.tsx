@@ -18,6 +18,7 @@ import {
   Flex,
   GridItem,
   Grid,
+  Checkbox,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
@@ -223,37 +224,46 @@ const Step1: React.FC<{
   }, [selectedCategory]);
 
   return (
-    <RadioGroup>
-      <SimpleGrid columns={2} spacing={5} minChildWidth="200px">
-        {categories.map((category) => (
-          <Card key={category.id}>
-            <CardBody>
-              <Radio
-                colorScheme="brand_yellow"
-                onChange={() => handleCategoryChange(category.id)}
-                value={category.id.toString()}
-              >
-                <Box>
-                  <Heading size="xs" textTransform="uppercase">
-                    {category.name}
-                  </Heading>
-                  <Text pt="2" fontSize="sm">
-                    {category.description}
-                  </Text>
-                </Box>
-              </Radio>
-            </CardBody>
-          </Card>
-        ))}
-      </SimpleGrid>
-    </RadioGroup>
+    <SimpleGrid columns={2} spacing={5} minChildWidth="200px">
+      {categories.map((category: Category) => (
+        <Card key={category.id}>
+          <CardBody
+            onClick={() => handleCategoryChange(category.id)}
+            borderWidth={selectedCategory === category.id ? "2px" : ""}
+            borderColor={
+              selectedCategory === category.id ? "brand_blue.500" : ""
+            }
+            backgroundColor={selectedCategory === category.id ? "blue.100" : ""}
+            position="relative"
+          >
+            <Checkbox
+              position="absolute"
+              top="2"
+              right="2"
+              isChecked={selectedCategory === category.id}
+              size="md"
+              colorScheme="brand_blue"
+              zIndex="1"
+            />
+            <Box>
+              <Heading size="xs" textTransform="uppercase">
+                {category.name}
+              </Heading>
+              <Text pt="2" fontSize="sm">
+                {category.description}
+              </Text>
+            </Box>
+          </CardBody>
+        </Card>
+      ))}
+    </SimpleGrid>
   );
 };
 
 const Step2: React.FC<{ selectedCategory: number }> = ({
   selectedCategory,
 }) => {
-  const [type, setType] = useState(0);
+  const [selectedType, setSelectedType] = useState(0);
   const dispatch: AppDispatch = useDispatch();
   const types: Type[] = useSelector((state: RootState) => state.type.types);
   useEffect(() => {
@@ -266,36 +276,42 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
       : types;
 
   const handleTypeChange = (type_id: number) => {
-    setType(type_id);
+    setSelectedType(type_id);
   };
 
   useEffect(() => {
-    dispatch(updateOrderField({ field: "type", value: type }));
-  }, [type]);
+    dispatch(updateOrderField({ field: "type", value: selectedType }));
+  }, [selectedType]);
 
   return (
-    <RadioGroup>
-      <SimpleGrid minChildWidth="150px" spacing={10}>
-        {filteredTypes.map((type) => (
-          <Card key={type.id}>
-            <CardBody>
-              <Radio
-                colorScheme="brand_yellow"
-                onChange={() => handleTypeChange(type.id)}
-                value={type.id.toString()}
-              >
-                <Box>
-                  <Heading size="xs" textTransform="uppercase">
-                    {type.name}
-                  </Heading>
-                  <Image src={type.image_url} alt={type.name} boxSize="200px" />
-                </Box>
-              </Radio>
-            </CardBody>
-          </Card>
-        ))}
-      </SimpleGrid>
-    </RadioGroup>
+    <SimpleGrid minChildWidth="200px" spacing={10}>
+      {filteredTypes.map((type: Type) => (
+        <Card key={type.id}>
+          <CardBody
+            borderWidth={selectedType === type.id ? "2px" : ""}
+            borderColor={selectedType === type.id ? "brand_yellow.500" : ""}
+            backgroundColor={selectedType === type.id ? "yellow.50" : ""}
+            onClick={() => handleTypeChange(type.id)}
+          >
+            <Checkbox
+              position="absolute"
+              top="2"
+              size="md"
+              zIndex="1"
+              right="2"
+              colorScheme="brand_yellow"
+              isChecked={selectedType === type.id}
+            />
+            <Box>
+              <Heading size="xs" textTransform="uppercase">
+                {type.name}
+              </Heading>
+              <Image src={type.image_url} alt={type.name} boxSize="200px" />
+            </Box>
+          </CardBody>
+        </Card>
+      ))}
+    </SimpleGrid>
   );
 };
 
