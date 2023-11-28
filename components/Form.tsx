@@ -109,7 +109,7 @@ type OrderForm = {
 let chosen_category: number = 1;
 
 const StepForm: React.FC = () => {
-  const totalSteps = 8;
+  const totalSteps = 6;
 
   const [step, setStep] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -173,6 +173,8 @@ const StepForm: React.FC = () => {
           {step === 2 && <Step2 selectedCategory={selectedCategory} />}
           {step === 3 && <Step3 />}
           {step === 4 && <Step4 />}
+          {step === 5 && <Step5 />}
+          {step === 6 && <Step6 />}
 
           <Flex justifyContent="space-between" alignItems="center">
             <Button onClick={prevStep} isDisabled={step === 1} marginRight={2}>
@@ -229,11 +231,13 @@ const Step1: React.FC<{
         <Card key={category.id}>
           <CardBody
             onClick={() => handleCategoryChange(category.id)}
-            borderWidth={selectedCategory === category.id ? "2px" : ""}
+            // borderWidth={selectedCategory === category.id ? "2px" : ""}
             borderColor={
-              selectedCategory === category.id ? "brand_blue.500" : ""
+              selectedCategory === category.id ? "brand_yellow.500" : ""
             }
-            backgroundColor={selectedCategory === category.id ? "blue.100" : ""}
+            backgroundColor={
+              selectedCategory === category.id ? "yellow.300" : ""
+            }
             position="relative"
           >
             <Checkbox
@@ -288,9 +292,7 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
       {filteredTypes.map((type: Type) => (
         <Card key={type.id}>
           <CardBody
-            borderWidth={selectedType === type.id ? "2px" : ""}
-            borderColor={selectedType === type.id ? "brand_yellow.500" : ""}
-            backgroundColor={selectedType === type.id ? "yellow.50" : ""}
+            backgroundColor={selectedType === type.id ? "yellow.200" : ""}
             onClick={() => handleTypeChange(type.id)}
           >
             <Checkbox
@@ -299,7 +301,7 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
               size="md"
               zIndex="1"
               right="2"
-              colorScheme="brand_yellow"
+              colorScheme="brand_blue"
               isChecked={selectedType === type.id}
             />
             <Box>
@@ -316,8 +318,8 @@ const Step2: React.FC<{ selectedCategory: number }> = ({
 };
 
 const Step3: React.FC = () => {
-  const [palette, setPalette] = useState(0);
-  const [ambiance, setAmbiance] = useState(0);
+  const [selectedPalette, setPalette] = useState(0);
+  const [selectedAmbiance, setAmbiance] = useState(0);
 
   const dispatch: AppDispatch = useDispatch();
   const ambiances: Ambiance[] = useSelector(
@@ -342,69 +344,73 @@ const Step3: React.FC = () => {
 
   useEffect(() => {
     // dispatch(updateOrderField({ field: "palette", value: palette }));
-    dispatch(updateOrderField({ field: "ambiance", value: ambiance }));
-  }, [ambiance]);
+    dispatch(updateOrderField({ field: "ambiance", value: selectedAmbiance }));
+  }, [selectedAmbiance]);
 
   return (
     <Box padding={2}>
       <SimpleGrid columns={1} minChildWidth="600px">
-        <RadioGroup>
-          {palettes.map((palette) => (
-            <Radio
-              key={palette.id}
-              colorScheme="brand_yellow"
-              value={palette.id.toString()}
-              onChange={() => handlePaletteChange(palette.id)}
-            >
-              <Box>
-                <Heading size="xs" textTransform="uppercase">
-                  {palette.name}
-                </Heading>
-                <Image
-                  src={palette.image_url}
-                  alt={palette.name}
-                  boxSize="200px"
-                />
-              </Box>
-            </Radio>
-          ))}
-        </RadioGroup>
+        {palettes.map((palette) => (
+          <Box
+            backgroundColor={selectedPalette === palette.id ? "yellow.200" : ""}
+            onClick={() => handlePaletteChange(palette.id)}
+          >
+            <Checkbox
+              position="absolute"
+              top="2"
+              size="md"
+              zIndex="1"
+              right="2"
+              colorScheme="brand_blue"
+              isChecked={selectedPalette === palette.id}
+            />
+            <Heading size="xs" textTransform="uppercase">
+              {palette.name}
+            </Heading>
+            <Image src={palette.image_url} alt={palette.name} boxSize="200px" />
+          </Box>
+        ))}
       </SimpleGrid>
 
       <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
-        <RadioGroup>
-          {ambiances.map((ambiance) => (
-            <Radio
-              key={ambiance.id}
-              value={ambiance.id.toString()}
-              colorScheme="brand_yellow"
-              onChange={() => handleAmbianceChange(ambiance.id)}
-            >
-              <Box padding={1}>
-                <Card>
-                  <CardBody>
-                    <Image
-                      src={ambiance.image_url}
-                      alt={ambiance.name}
-                      boxSize="200px"
-                    />
-                    <Stack mt="6" spacing="3">
-                      <Heading size="md">{ambiance.name}</Heading>
-                      <Text>{ambiance.description}</Text>
-                    </Stack>
-                  </CardBody>
-                </Card>
-              </Box>
-            </Radio>
-          ))}
-        </RadioGroup>
+        {ambiances.map((ambiance) => (
+          <Box padding={1}>
+            <Card>
+              <CardBody
+                backgroundColor={
+                  selectedAmbiance === ambiance.id ? "yellow.200" : ""
+                }
+                onClick={() => handleAmbianceChange(ambiance.id)}
+              >
+                <Checkbox
+                  position="absolute"
+                  top="2"
+                  size="md"
+                  zIndex="1"
+                  right="2"
+                  colorScheme="brand_blue"
+                  isChecked={selectedAmbiance === ambiance.id}
+                />
+                <Image
+                  src={ambiance.image_url}
+                  alt={ambiance.name}
+                  boxSize="200px"
+                />
+                <Stack mt="6" spacing="3">
+                  <Heading size="md">{ambiance.name}</Heading>
+                  <Text>{ambiance.description}</Text>
+                </Stack>
+              </CardBody>
+            </Card>
+          </Box>
+        ))}
       </SimpleGrid>
     </Box>
   );
 };
 
 const Step4: React.FC = () => {
-  const [revetement, setRevetement] = useState(0);
+  const [selectedRevetement, setRevetement] = useState(0);
 
   const dispatch: AppDispatch = useDispatch();
   const revetements: Revetement[] = useSelector(
@@ -419,38 +425,45 @@ const Step4: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(updateOrderField({ field: "revetment", value: revetement }));
-  }, [revetement]);
+    dispatch(
+      updateOrderField({ field: "revetment", value: selectedRevetement })
+    );
+  }, [selectedRevetement]);
 
   return (
-    <RadioGroup>
-      <SimpleGrid columns={1}>
-        {revetements.map((revetement) => (
-          <Box key={revetement.id}>
-            <Radio
-              key={revetement.id}
-              value={revetement.id.toString()}
-              colorScheme="brand_yellow"
-              onChange={() => handleRevetementChange(revetement.id)}
+    <SimpleGrid columns={1}>
+      {revetements.map((revetement) => (
+        <Box key={revetement.id}>
+          <Card>
+            <CardBody
+              backgroundColor={
+                selectedRevetement === revetement.id ? "yellow.200" : ""
+              }
+              onClick={() => handleRevetementChange(revetement.id)}
             >
-              <Card>
-                <CardBody>
-                  <Image
-                    src={revetement.image_url}
-                    alt={revetement.name}
-                    boxSize="200px"
-                  />
-                  <Stack mt="6" spacing="3">
-                    <Heading size="md">{revetement.name}</Heading>
-                    <Text>{revetement.description}</Text>
-                  </Stack>
-                </CardBody>
-              </Card>
-            </Radio>
-          </Box>
-        ))}
-      </SimpleGrid>
-    </RadioGroup>
+              <Checkbox
+                position="absolute"
+                top="2"
+                size="md"
+                zIndex="1"
+                right="2"
+                colorScheme="brand_blue"
+                isChecked={selectedRevetement === revetement.id}
+              />
+              <Image
+                src={revetement.image_url}
+                alt={revetement.name}
+                boxSize="200px"
+              />
+              <Stack mt="6" spacing="3">
+                <Heading size="md">{revetement.name}</Heading>
+                <Text>{revetement.description}</Text>
+              </Stack>
+            </CardBody>
+          </Card>
+        </Box>
+      ))}
+    </SimpleGrid>
   );
 };
 
@@ -486,7 +499,7 @@ const Step5: React.FC = () => {
 const Step6: React.FC = () => {
   return (
     <VStack align="stretch">
-      <Text>Step 6 content</Text>
+      <Text>Ajouter vos images</Text>
     </VStack>
   );
 };

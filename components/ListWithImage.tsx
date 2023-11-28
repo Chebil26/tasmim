@@ -10,6 +10,7 @@ import {
   Stack,
   VStack,
   chakra,
+  SimpleGrid,
 } from "@chakra-ui/react";
 
 interface ListItemData {
@@ -33,22 +34,22 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
   };
 
   return (
-    <Container maxW={"4xl"} p={20}>
+    <Container maxW={"6xl"} p={20}>
       <chakra.h1
         color={"brand_blue.500"}
         textAlign={"left"}
-        fontSize={"3xl"}
+        fontSize={"4xl"}
         py={5}
         fontWeight={"bold"}
       >
         Ce que vous recevez:
       </chakra.h1>
-      <Stack direction="row" spacing={16}>
+      <SimpleGrid minChildWidth="400px">
         <Box
           borderLeftWidth={1}
           borderColor="gray.100"
           paddingY={2}
-          paddingRight={4}
+          paddingRight={20}
         >
           <List spacing={3} minWidth={300}>
             {items.map((item) => (
@@ -73,14 +74,12 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
             ))}
           </List>
         </Box>
-        <VStack align="start">
-          {selectedItem && (
-            <Box boxSize={400} borderRadius="20%">
-              <Image src={selectedItem.imageUrl} alt={selectedItem.title} />
-            </Box>
-          )}
-        </VStack>
-      </Stack>
+        {selectedItem && (
+          <Box boxSize={400} borderRadius="20%">
+            <Image src={selectedItem.imageUrl} alt={selectedItem.title} />
+          </Box>
+        )}
+      </SimpleGrid>
     </Container>
   );
 };
