@@ -375,8 +375,8 @@ const Step3: React.FC = () => {
 
       <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
         {ambiances.map((ambiance) => (
-          <Box padding={1}>
-            <Card key={ambiance.id}>
+          <Box key={ambiance.id} padding={1}>
+            <Card>
               <CardBody
                 backgroundColor={
                   selectedAmbiance === ambiance.id ? "yellow.200" : ""
