@@ -354,6 +354,7 @@ const Step3: React.FC = () => {
           <Box
             backgroundColor={selectedPalette === palette.id ? "yellow.200" : ""}
             onClick={() => handlePaletteChange(palette.id)}
+            key={palette.id}
           >
             <Checkbox
               position="absolute"
@@ -375,7 +376,7 @@ const Step3: React.FC = () => {
       <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
         {ambiances.map((ambiance) => (
           <Box padding={1}>
-            <Card>
+            <Card key={ambiance.id}>
               <CardBody
                 backgroundColor={
                   selectedAmbiance === ambiance.id ? "yellow.200" : ""
