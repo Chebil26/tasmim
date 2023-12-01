@@ -19,8 +19,12 @@ import {
   GridItem,
   Grid,
   Checkbox,
+  useToast,
+  Input,
+  FormControl,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -497,10 +501,35 @@ const Step5: React.FC = () => {
   );
 };
 
+interface FormData {
+  image: FileList;
+}
+
 const Step6: React.FC = () => {
+  const { register, handleSubmit } = useForm<FormData>();
+  const toast = useToast();
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    // You can handle image upload logic here
+    // For example, you can use FormData and send it to your server using API
+    console.log(data.image);
+
+    // Show success message
+    toast({
+      title: "Image uploaded successfully",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
   return (
-    <VStack align="stretch">
+    <VStack align="stretch" spacing={4}>
       <Text>Ajouter vos images</Text>
+      <FormControl onSubmit={handleSubmit(onSubmit)}>
+        <Input type="file" name="image" />
+        <Button type="submit">Upload Image</Button>
+      </FormControl>
     </VStack>
   );
 };
