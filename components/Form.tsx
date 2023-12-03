@@ -36,6 +36,8 @@ import { fetchRevetements } from "@/app/Redux/Features/revetementSlice";
 import { fetchPalettes } from "@/app/Redux/Features/paletteSlice";
 import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
 import { updateOrderField } from "@/app/Redux/Features/orderFormSlice";
+import { createUserImage } from "@/app/Redux/Features/userImage";
+import { cpSync } from "fs";
 
 type Category = {
   description: string;
@@ -501,36 +503,48 @@ const Step5: React.FC = () => {
   );
 };
 
-interface FormData {
-  image: FileList;
-}
-
 const Step6: React.FC = () => {
-  const { register, handleSubmit } = useForm<FormData>();
-  const toast = useToast();
+  const [selectedUser, setSelectedUser] = useState<number | null>(2);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    // You can handle image upload logic here
-    // For example, you can use FormData and send it to your server using API
-    console.log(data.image);
+  const dispatch = useDispatch();
 
-    // Show success message
-    toast({
-      title: "Image uploaded successfully",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+  const handleUserChange = (userId: number) => {
+    setSelectedUser(userId);
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    setSelectedFile(file);
+  };
+
+  const handleUpload = () => {
+    if (selectedUser && selectedFile) {
+      dispatch(
+        createUserImage({ user: selectedUser, image: selectedFile }) as any
+      );
+    }
   };
 
   return (
-    <VStack align="stretch" spacing={4}>
-      <Text>Ajouter vos images</Text>
-      <FormControl onSubmit={handleSubmit(onSubmit)}>
-        <Input type="file" name="image" />
-        <Button type="submit">Upload Image</Button>
-      </FormControl>
-    </VStack>
+    <Box>
+      <Box mb="4">
+        {/* Include your logic for fetching and rendering users here */}
+        <label>Select User:</label>
+        <select onChange={(e) => handleUserChange(Number(e.target.value))}>
+          {/* Options for selecting users */}
+        </select>
+      </Box>
+
+      <Box mb="4">
+        <label>Choose Image:</label>
+        <Input type="file" onChange={handleFileChange} />
+      </Box>
+
+      <Button colorScheme="teal" onClick={handleUpload}>
+        Upload
+      </Button>
+    </Box>
   );
 };
 

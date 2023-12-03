@@ -15,6 +15,7 @@ import questionReducer from "./Features/questionSlice";
 import orderReducer from "./Features/orderSlice";
 import paletteReducer from "./Features/paletteSlice";
 import orderFormReducer from "./Features/orderFormSlice";
+import userImageReducer from "./Features/userImage";
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
     question: questionReducer,
     order: orderReducer,
 
+    userImages: userImageReducer,
     orderForm: orderFormReducer,
   },
 });
