@@ -17,6 +17,8 @@ import paletteReducer from "./Features/paletteSlice";
 import orderFormReducer from "./Features/orderFormSlice";
 import userImageReducer from "./Features/userImage";
 
+import authReducer from "./Features/authSlice";
+
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
@@ -35,6 +37,8 @@ export const store = configureStore({
 
     userImages: userImageReducer,
     orderForm: orderFormReducer,
+
+    auth: authReducer,
   },
 });
 

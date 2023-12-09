@@ -1,3 +1,5 @@
+import { loginUser } from "@/app/Redux/Features/authSlice";
+import { RootState } from "@/app/Redux/store";
 import {
   Flex,
   Box,
@@ -11,9 +13,24 @@ import {
   Heading,
   Text,
   useColorModeValue,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function SimpleCard() {
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+
+  const handleLogin = () => {
+    dispatch(loginUser({ username, password }));
+    console.log("user:", user);
+  };
   return (
     <Flex
       minH={"100vh"}
@@ -37,11 +54,19 @@ export default function SimpleCard() {
           <Stack spacing={4}>
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input
+                type="email"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </FormControl>
             <FormControl id="password">
               <FormLabel>Password</FormLabel>
-              <Input type="password" />
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </FormControl>
             <Stack spacing={10}>
               <Stack
@@ -58,6 +83,7 @@ export default function SimpleCard() {
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={handleLogin}
               >
                 Sign in
               </Button>
@@ -66,5 +92,5 @@ export default function SimpleCard() {
         </Box>
       </Stack>
     </Flex>
-  )
+  );
 }

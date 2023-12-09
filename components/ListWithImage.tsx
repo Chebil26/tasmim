@@ -51,7 +51,7 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
           paddingY={2}
           paddingRight={20}
         >
-          <List spacing={3} minWidth={300}>
+          <List spacing={3} minWidth={300} fontSize="lg">
             {items.map((item) => (
               <ListItem
                 key={item.id}

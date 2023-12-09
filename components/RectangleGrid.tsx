@@ -1,5 +1,16 @@
 // Import necessary dependencies
-import { Box, Grid, Text, Image, Container } from "@chakra-ui/react";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Grid,
+  Text,
+  Image,
+  Container,
+  Link,
+  Button,
+  Icon,
+  VStack,
+} from "@chakra-ui/react";
 import React from "react";
 
 // Define your data for each rectangle
@@ -28,18 +39,27 @@ const rectanglesData = [
 
 const RectangleGrid = () => {
   return (
-    <Container maxW={"8xl"} p={20}>
-      <Grid templateColumns="repeat(2, 1fr)" gap={12}>
+    <Container maxW={"8xl"} p={20} display="flex" flexDirection="column">
+      <Grid
+        templateColumns={{
+          base: "1fr",
+          md: "repeat(2, 1fr)",
+          lg: "repeat(2, 1fr)",
+        }}
+        gap={12}
+      >
         {rectanglesData.map((rectangle, index) => (
           <Box
             key={index}
             p={4}
-            borderWidth="1px"
-            borderRadius="sm"
+            borderWidth="medium"
+            borderRadius="md"
+            borderColor="brand_yellow.500"
             overflow="hidden"
             position="relative"
-            bg="orange.100" // Set your desired background color
-            height="180px"
+            height="150px"
+            minWidth="200px"
+            fontSize="lg"
           >
             <Text fontSize="xl" fontWeight="bold" color="brand_blue">
               {rectangle.header}
