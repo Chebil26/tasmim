@@ -10,28 +10,29 @@ import {
   Button,
   Icon,
   VStack,
+  Flex,
+  HStack,
 } from "@chakra-ui/react";
 import React from "react";
 
-// Define your data for each rectangle
 const rectanglesData = [
   {
-    header: "Rectangle 1",
+    header: "Travaillez avec nos designers",
     text: "Some text for Rectangle 1",
     imageUrl: "https://placekitten.com/100/100", // Example image URL
   },
   {
-    header: "Rectangle 2",
+    header: "Nous modifions vos designs jusqu'à 4 fois",
     text: "Some text for Rectangle 2",
     imageUrl: "https://placekitten.com/100/101", // Example image URL
   },
   {
-    header: "Rectangle 3",
+    header: "Recevez une maquette 3D interactive",
     text: "Some text for Rectangle 3",
     imageUrl: "https://placekitten.com/101/100", // Example image URL
   },
   {
-    header: "Rectangle 4",
+    header: "Nous prenons en charge la réalisation",
     text: "Some text for Rectangle 4",
     imageUrl: "https://placekitten.com/101/101", // Example image URL
   },
@@ -61,10 +62,9 @@ const RectangleGrid = () => {
             minWidth="200px"
             fontSize="lg"
           >
-            <Text fontSize="xl" fontWeight="bold" color="brand_blue">
+            <Text fontSize="xl" fontWeight="bold" color="brand_blue.500">
               {rectangle.header}
             </Text>
-            <Text mt={2}>{rectangle.text}</Text>
             <Image
               src={rectangle.imageUrl}
               alt={`Image ${index + 1}`}

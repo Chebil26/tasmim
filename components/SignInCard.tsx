@@ -1,5 +1,6 @@
 import { loginUser } from "@/app/Redux/Features/authSlice";
 import { RootState } from "@/app/Redux/store";
+import { useRouter } from "next/navigation";
 import {
   Flex,
   Box,
@@ -23,14 +24,19 @@ export default function SimpleCard() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const router = useRouter();
   const user = useSelector((state: RootState) => state.auth.user);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
 
   const handleLogin = () => {
-    dispatch(loginUser({ username, password }));
-    console.log("user:", user);
+    dispatch(loginUser({ username, password })).then((action) => {
+      console.log(action);
+      // Check if the login was successful
+      // Redirect to a specific route (e.g., /dashboard) after successful login
+      router.push("/");
+    });
   };
   return (
     <Flex

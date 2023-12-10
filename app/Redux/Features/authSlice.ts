@@ -26,11 +26,11 @@ export const loginUser = createAsyncThunk(
         body: JSON.stringify(credentials),
       });
 
-      const data = await response.json();
-      localStorage.setItem("userInfo", JSON.stringify(data));
-
       if (response.ok) {
-        dispatch(loginSuccess(data));
+        const data = await response.json();
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        dispatch(loginSuccess(data.user_id)); // Assuming user_id is the correct field
+        // Redirect to the homepage here (handle it in your component or dispatch another action)
       } else {
         // Handle login failure
       }
@@ -72,8 +72,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action: PayloadAction<any>) => {
-      state.user = action.payload.user_id;
-      state;
+      state.user = action.payload;
       state.isAuthenticated = true;
     },
     logout: (state) => {

@@ -126,6 +126,14 @@ const StepForm: React.FC = () => {
   const orderForm: OrderForm = useSelector(
     (state: RootState) => state.orderForm
   );
+  const user_id = JSON.parse(localStorage.getItem("userInfo") || "{}").id;
+
+  {
+    user_id &&
+      useEffect(() => {
+        dispatch(updateOrderField({ field: "user", value: user_id }));
+      }, [user_id]);
+  }
 
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, totalSteps));
@@ -504,14 +512,11 @@ const Step5: React.FC = () => {
 };
 
 const Step6: React.FC = () => {
-  const [selectedUser, setSelectedUser] = useState<number | null>(2);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const dispatch = useDispatch();
 
-  const handleUserChange = (userId: number) => {
-    setSelectedUser(userId);
-  };
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -519,23 +524,13 @@ const Step6: React.FC = () => {
   };
 
   const handleUpload = () => {
-    if (selectedUser && selectedFile) {
-      dispatch(
-        createUserImage({ user: selectedUser, image: selectedFile }) as any
-      );
+    if (user && selectedFile) {
+      dispatch(createUserImage({ user: user, image: selectedFile }) as any);
     }
   };
 
   return (
     <Box>
-      <Box mb="4">
-        {/* Include your logic for fetching and rendering users here */}
-        <label>Select User:</label>
-        <select onChange={(e) => handleUserChange(Number(e.target.value))}>
-          {/* Options for selecting users */}
-        </select>
-      </Box>
-
       <Box mb="4">
         <label>Choose Image:</label>
         <Input type="file" onChange={handleFileChange} />
