@@ -1,7 +1,6 @@
 // slices/authSlice.ts
 
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store";
 import { API_BASE_URL } from "@/config";
 
 interface AuthState {
@@ -19,8 +18,6 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials: { username: string; password: string }, { dispatch }) => {
     try {
-      // Make API call to DRF backend for login
-
       const response = await fetch(`${API_BASE_URL}/api/user/login/`, {
         method: "POST",
         headers: {
@@ -75,7 +72,8 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action: PayloadAction<any>) => {
-      state.user = action.payload.user;
+      state.user = action.payload.user_id;
+      state;
       state.isAuthenticated = true;
     },
     logout: (state) => {

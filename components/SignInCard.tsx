@@ -16,9 +16,10 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 export default function SimpleCard() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
