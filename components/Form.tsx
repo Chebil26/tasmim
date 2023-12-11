@@ -127,12 +127,11 @@ const StepForm: React.FC = () => {
   const userInfoString = localStorage.getItem("userInfo");
   const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
 
-  {
-    user_id &&
-      useEffect(() => {
-        dispatch(updateOrderField({ field: "user", value: user_id }));
-      }, [user_id]);
-  }
+  useEffect(() => {
+    if (user_id) {
+      dispatch(updateOrderField({ field: "user", value: user_id }));
+    }
+  }, [user_id, dispatch]);
 
   console.log(orderForm);
 
