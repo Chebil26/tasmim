@@ -124,7 +124,8 @@ const StepForm: React.FC = () => {
   const orderForm: OrderForm = useSelector(
     (state: RootState) => state.orderForm
   );
-  const userInfoString = localStorage.getItem("userInfo");
+  const userInfoString =
+    typeof window !== "undefined" ? localStorage.getItem("userInfo") : null;
   const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
 
   useEffect(() => {
@@ -132,8 +133,6 @@ const StepForm: React.FC = () => {
       dispatch(updateOrderField({ field: "user", value: user_id }));
     }
   }, [user_id, dispatch]);
-
-  console.log(orderForm);
 
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, totalSteps));

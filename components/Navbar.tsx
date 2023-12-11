@@ -33,7 +33,8 @@ export default function WithSubnavigation() {
   const router = useRouter();
 
   const { isOpen, onToggle } = useDisclosure();
-  const userInfoString = localStorage.getItem("userInfo");
+  const userInfoString =
+    typeof window !== "undefined" ? localStorage.getItem("userInfo") : null;
   const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
 
   const handleLogout = () => {
