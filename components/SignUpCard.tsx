@@ -13,12 +13,33 @@ import {
   Text,
   useColorModeValue,
   Link,
-} from "@chakra-ui/react"
-import { useState } from "react"
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons"
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { signupUser } from "@/app/Redux/Features/authSlice";
 
 export default function SignupCard() {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+
+  const router = useRouter();
+
+  const handleSignup = () => {
+    if (password !== passwordConfirmation) {
+      // Handle password mismatch, e.g., show an error message
+      console.error("Passwords do not match");
+      return;
+    }
+    dispatch(signupUser({ username, password })).then((action) => {
+      router.back();
+    });
+  };
 
   return (
     <Flex
@@ -33,7 +54,7 @@ export default function SignupCard() {
             Sign up
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool features ✌️
+            Inscrivez avec votre email et mot de pass seulement
           </Text>
         </Stack>
         <Box
@@ -43,7 +64,7 @@ export default function SignupCard() {
           p={8}
         >
           <Stack spacing={4}>
-            <HStack>
+            {/* <HStack>
               <Box>
                 <FormControl id="firstName" isRequired>
                   <FormLabel>First Name</FormLabel>
@@ -56,15 +77,43 @@ export default function SignupCard() {
                   <Input type="text" />
                 </FormControl>
               </Box>
-            </HStack>
+            </HStack> */}
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input
+                type="email"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement h={"full"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+            <FormControl id="passwordConfirmation" isRequired>
+              <FormLabel>Confirm Password</FormLabel>
+              <InputGroup>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={passwordConfirmation}
+                  onChange={(e) => setPasswordConfirmation(e.target.value)}
+                />
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
@@ -86,6 +135,7 @@ export default function SignupCard() {
                 _hover={{
                   bg: "blue.500",
                 }}
+                onClick={handleSignup}
               >
                 Sign up
               </Button>
@@ -99,5 +149,5 @@ export default function SignupCard() {
         </Box>
       </Stack>
     </Flex>
-  )
+  );
 }

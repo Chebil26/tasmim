@@ -112,8 +112,6 @@ type OrderForm = {
   questions: any[];
 };
 
-let chosen_category: number = 1;
-
 const StepForm: React.FC = () => {
   const totalSteps = 6;
 
@@ -126,7 +124,8 @@ const StepForm: React.FC = () => {
   const orderForm: OrderForm = useSelector(
     (state: RootState) => state.orderForm
   );
-  const user_id = JSON.parse(localStorage.getItem("userInfo") || "{}").id;
+  const userInfoString = localStorage.getItem("userInfo");
+  const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
 
   {
     user_id &&
@@ -134,6 +133,8 @@ const StepForm: React.FC = () => {
         dispatch(updateOrderField({ field: "user", value: user_id }));
       }, [user_id]);
   }
+
+  console.log(orderForm);
 
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, totalSteps));

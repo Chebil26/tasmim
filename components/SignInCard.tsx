@@ -32,10 +32,7 @@ export default function SimpleCard() {
 
   const handleLogin = () => {
     dispatch(loginUser({ username, password })).then((action) => {
-      console.log(action);
-      // Check if the login was successful
-      // Redirect to a specific route (e.g., /dashboard) after successful login
-      router.push("/");
+      router.back();
     });
   };
   return (

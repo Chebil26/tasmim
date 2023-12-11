@@ -22,10 +22,25 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/Redux/store";
+import { logout } from "@/app/Redux/Features/authSlice";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { useRouter } from "next/navigation";
 
 export default function WithSubnavigation() {
-  const { isOpen, onToggle } = useDisclosure();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const router = useRouter();
 
+  const { isOpen, onToggle } = useDisclosure();
+  const userInfoString = localStorage.getItem("userInfo");
+  const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
+
+  const handleLogout = () => {
+    dispatch(logout());
+    router.push("/");
+    window.location.reload();
+  };
   return (
     <Box>
       <Flex
@@ -75,36 +90,58 @@ export default function WithSubnavigation() {
           </Flex>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          spacing={6}
-        >
-          <Button
-            as={"a"}
-            fontSize={"sm"}
-            fontWeight={400}
-            variant={"link"}
-            href="/signin"
+        {!user_id ? (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
           >
-            Sign In
-          </Button>
-          <Button
-            as={"a"}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize={"sm"}
-            fontWeight={600}
-            color={"white"}
-            href="/signup"
-            bg={"brand_blue.500"}
-            _hover={{
-              bg: "blue.900",
-            }}
+            <Button
+              as={"a"}
+              fontSize={"sm"}
+              fontWeight={400}
+              variant={"link"}
+              href="/signin"
+            >
+              Sign In
+            </Button>
+            <Button
+              as={"a"}
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              href="/signup"
+              bg={"brand_blue.500"}
+              _hover={{
+                bg: "blue.900",
+              }}
+            >
+              Sign Up
+            </Button>
+          </Stack>
+        ) : (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            direction={"row"}
+            spacing={6}
           >
-            Sign Up
-          </Button>
-        </Stack>
+            <Button
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"brand_blue.500"}
+              _hover={{
+                bg: "blue.900",
+              }}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Stack>
+        )}
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
