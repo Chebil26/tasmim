@@ -44,10 +44,7 @@ export default function SimpleCard() {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
-          <Text fontSize={"lg"} color={"gray.600"}>
-            to enjoy all of our cool <Link color={"blue.400"}>features</Link> ✌️
-          </Text>
+          <Heading fontSize={"4xl"}>Authentifier vous</Heading>
         </Stack>
         <Box
           rounded={"lg"}
@@ -57,7 +54,7 @@ export default function SimpleCard() {
         >
           <Stack spacing={4}>
             <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>Adress Email</FormLabel>
               <Input
                 type="email"
                 value={username}
@@ -65,7 +62,7 @@ export default function SimpleCard() {
               />
             </FormControl>
             <FormControl id="password">
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mot de passe</FormLabel>
               <Input
                 type="password"
                 value={password}
@@ -78,18 +75,18 @@ export default function SimpleCard() {
                 align={"start"}
                 justify={"space-between"}
               >
-                <Checkbox>Remember me</Checkbox>
-                <Link color={"blue.400"}>Forgot password?</Link>
+                <Checkbox colorScheme="brand_blue">Se souvenir de moi</Checkbox>
+                {/* <Link color={"blue.400"}>Forgot password?</Link> */}
               </Stack>
               <Button
-                bg={"blue.400"}
+                bg={"brand_yellow.500"}
                 color={"white"}
                 _hover={{
-                  bg: "blue.500",
+                  bg: "yellow.200",
                 }}
                 onClick={handleLogin}
               >
-                Sign in
+                Login
               </Button>
             </Stack>
           </Stack>

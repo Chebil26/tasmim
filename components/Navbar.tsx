@@ -105,7 +105,7 @@ export default function WithSubnavigation() {
               variant={"link"}
               href="/signin"
             >
-              Sign In
+              Login
             </Button>
             <Button
               as={"a"}
@@ -114,12 +114,13 @@ export default function WithSubnavigation() {
               fontWeight={600}
               color={"white"}
               href="/signup"
-              bg={"brand_blue.500"}
+              textColor="brand_blue.500"
+              bg={"brand_yellow.500"}
               _hover={{
-                bg: "blue.900",
+                bg: "yellow.200",
               }}
             >
-              Sign Up
+              Inscription
             </Button>
           </Stack>
         ) : (
@@ -133,13 +134,13 @@ export default function WithSubnavigation() {
               fontSize={"sm"}
               fontWeight={600}
               color={"white"}
-              bg={"brand_blue.500"}
+              bg={"brand_yellow.500"}
               _hover={{
-                bg: "blue.900",
+                bg: "yellow.200",
               }}
               onClick={handleLogout}
             >
-              Logout
+              Se déconnecter
             </Button>
           </Stack>
         )}

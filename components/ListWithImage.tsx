@@ -67,9 +67,9 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
                 _hover={{ bg: "blue.50" }}
               >
                 {item.title}
-                {selectedItem?.id === item.id && (
+                {/* {selectedItem?.id === item.id && (
                   <Text>{item.description}</Text>
-                )}
+                )} */}
               </ListItem>
             ))}
           </List>

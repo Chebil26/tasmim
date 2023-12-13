@@ -51,7 +51,7 @@ export default function SignupCard() {
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Sign up
+            Inscription
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
             Inscrivez avec votre email et mot de pass seulement
@@ -79,7 +79,7 @@ export default function SignupCard() {
               </Box>
             </HStack> */}
             <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>Adress Email</FormLabel>
               <Input
                 type="email"
                 value={username}
@@ -87,7 +87,7 @@ export default function SignupCard() {
               />
             </FormControl>
             <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Mot de passe</FormLabel>
               <InputGroup>
                 <Input
                   type={showPassword ? "text" : "password"}
@@ -107,7 +107,7 @@ export default function SignupCard() {
               </InputGroup>
             </FormControl>
             <FormControl id="passwordConfirmation" isRequired>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>Confirmer le mot de passe</FormLabel>
               <InputGroup>
                 <Input
                   type={showPassword ? "text" : "password"}
@@ -130,19 +130,19 @@ export default function SignupCard() {
               <Button
                 loadingText="Submitting"
                 size="lg"
-                bg={"blue.400"}
+                bg={"brand_yellow.500"}
                 color={"white"}
                 _hover={{
-                  bg: "blue.500",
+                  bg: "yellow.200",
                 }}
                 onClick={handleSignup}
               >
-                Sign up
+                Inscription
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user? <Link color={"blue.400"}>Login</Link>
+                déja un utilisateur? <Link color={"blue.400"}>Login</Link>
               </Text>
             </Stack>
           </Stack>

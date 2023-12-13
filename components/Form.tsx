@@ -38,6 +38,7 @@ import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
 import { updateOrderField } from "@/app/Redux/Features/orderFormSlice";
 import { createUserImage } from "@/app/Redux/Features/userImage";
 import { cpSync } from "fs";
+import { createOrder } from "@/app/Redux/Features/orderSlice";
 
 type Category = {
   description: string;
@@ -113,7 +114,7 @@ type OrderForm = {
 };
 
 const StepForm: React.FC = () => {
-  const totalSteps = 6;
+  const totalSteps = 7;
 
   const [step, setStep] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState(0);
@@ -188,6 +189,7 @@ const StepForm: React.FC = () => {
           {step === 4 && <Step4 />}
           {step === 5 && <Step5 />}
           {step === 6 && <Step6 />}
+          {step === 7 && <Step7 />}
 
           <Flex justifyContent="space-between" alignItems="center">
             <Button onClick={prevStep} isDisabled={step === 1} marginRight={2}>
@@ -543,9 +545,27 @@ const Step6: React.FC = () => {
 };
 
 const Step7: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const orderForm: OrderForm = useSelector(
+    (state: RootState) => state.orderForm
+  );
+
+  const order_object = {
+    user: orderForm.user,
+    category: orderForm.category,
+    type: orderForm.type,
+    ambiance: orderForm.ambiance,
+    revetment: orderForm.revetment,
+  };
+  const handleCreateOrder = () => {
+    console.log(order_object);
+    dispatch(createOrder(order_object) as any);
+  };
+
   return (
     <VStack align="stretch">
-      <Text>Step 6 content</Text>
+      <Button onClick={handleCreateOrder}>submit</Button>
     </VStack>
   );
 };

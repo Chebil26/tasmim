@@ -10,7 +10,7 @@ interface Order {
 export const fetchOrders = createAsyncThunk<Order[]>(
   "orders/fetchOrders",
   async () => {
-    const response = await axios.get<Order[]>(`${API_BASE_URL}/api/orders`);
+    const response = await axios.get<Order[]>(`${API_BASE_URL}/api/orders/`);
     return response.data;
   }
 );
@@ -20,7 +20,7 @@ export const createOrder = createAsyncThunk<Order, Order>(
   "orders/createOrder",
   async (orderData) => {
     const response = await axios.post<Order>(
-      `${API_BASE_URL}/api/orders`,
+      `${API_BASE_URL}/api/orders/`,
       orderData
     );
     return response.data;
