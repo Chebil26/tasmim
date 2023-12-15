@@ -43,7 +43,7 @@ const WhatYouGet: React.FC = () => {
   ];
 
   return (
-    <Box bg={"yellow.50"}>
+    <Box bg={"#F4D160"}>
       <ListWithImage items={items} />
     </Box>
   );

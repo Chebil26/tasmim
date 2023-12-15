@@ -45,7 +45,7 @@ export default function WithSubnavigation() {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("white", "gray.800")}
+        bg="#0C356A"
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         maxH={"200px"}
@@ -154,7 +154,7 @@ export default function WithSubnavigation() {
 }
 
 const DesktopNav = () => {
-  const linkColor = useColorModeValue("gray.600", "gray.200");
+  const linkColor = useColorModeValue("white", "white");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
@@ -170,7 +170,7 @@ const DesktopNav = () => {
                 <Link
                   p={2}
                   href={navItem.href ?? "#"}
-                  fontSize={"sm"}
+                  fontSize={"xl"}
                   fontWeight={500}
                   color={linkColor}
                   _hover={{
