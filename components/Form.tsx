@@ -1,5 +1,26 @@
-// StepForm.tsx
-// on click => selected
+
+// ambiance for particulier 
+
+// pour entreprise type de boutique etc 
+
+// differentiate between pallettes and ambiances 
+
+// revetement all horizantal line 
+
+
+
+
+
+// before house images 
+// user_images suggestion for images from pintrest or pdf ' vos inspiration ' 
+
+// votre espace a concevoir
+//     plan
+//     image
+//     video
+//     dessin ameliore
+
+// user_images required
 import React, { useState } from "react";
 import {
   Box,
