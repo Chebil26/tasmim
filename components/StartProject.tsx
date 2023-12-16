@@ -33,24 +33,38 @@ const StartProject = () => {
     }
   };
   return (
-    <Container alignItems="center">
+    <Container alignItems="center" p={10} position="relative">
       <Button
         onClick={handleClick}
         color="brand_blue.500"
         variant="solid"
         size="lg"
         height="100px"
-        width="600px"
+        width="500px"
         rounded="md"
         mb={{ base: 2, sm: 0 }}
         lineHeight={1}
+        borderRadius="lg"
         backgroundColor="brand_yellow.500"
         _hover={{ backgroundColor: "yellow.300" }}
-        rightIcon={<ArrowForwardIcon />}
         fontSize="3xl"
       >
         <Text>Commencez votre projet !</Text>
       </Button>
+      {/* <Box
+        position="absolute"
+        left="0"
+        bottom="0"
+        ml={0}
+        mb={0}
+        fontSize="6xl"
+        color="brand_blue.500"
+        cursor="pointer"
+        onClick={handleClick}
+        transform="rotate(-45deg)"
+      >
+        <ArrowForwardIcon />
+      </Box> */}
     </Container>
   );
 };

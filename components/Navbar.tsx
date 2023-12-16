@@ -100,7 +100,7 @@ export default function WithSubnavigation() {
           >
             <Button
               as={"a"}
-              fontSize={"sm"}
+              fontSize={"md"}
               fontWeight={400}
               variant={"link"}
               href="/signin"
@@ -110,7 +110,7 @@ export default function WithSubnavigation() {
             <Button
               as={"a"}
               display={{ base: "none", md: "inline-flex" }}
-              fontSize={"sm"}
+              fontSize={"md"}
               fontWeight={600}
               color={"white"}
               href="/signup"
@@ -131,7 +131,7 @@ export default function WithSubnavigation() {
             spacing={6}
           >
             <Button
-              fontSize={"sm"}
+              fontSize={"md"}
               fontWeight={600}
               color={"white"}
               bg={"brand_yellow.500"}
@@ -155,7 +155,7 @@ export default function WithSubnavigation() {
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue("white", "white");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
+  const linkHoverColor = useColorModeValue("gray.500", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
   return (
@@ -170,7 +170,7 @@ const DesktopNav = () => {
                 <Link
                   p={2}
                   href={navItem.href ?? "#"}
-                  fontSize={"xl"}
+                  fontSize={"md"}
                   fontWeight={500}
                   color={linkColor}
                   _hover={{

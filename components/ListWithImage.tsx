@@ -29,8 +29,8 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
     items[0]
   );
 
-  // darken the selected and less to the unselected 
-  // desc smaller than the title 
+  // darken the selected and less to the unselected
+  // desc smaller than the title
 
   const handleItemClick = (item: ListItemData) => {
     setSelectedItem(item);
@@ -66,7 +66,7 @@ const ListWithImage: React.FC<ListWithImageProps> = ({ items }) => {
                     ? "brand_blue.500"
                     : "transparent"
                 }
-                fontSize={"2xl"}
+                fontSize={"xl"}
                 paddingLeft={2}
                 _hover={{ bg: "blue.50" }}
               >

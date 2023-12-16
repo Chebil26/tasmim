@@ -5,6 +5,7 @@ import CompanyInfo from "@/components/Info";
 import WhatYouGet from "@/components/WhatYouGet";
 import StartProject from "@/components/StartProject";
 import RectangleGrid from "@/components/RectangleGrid";
+import Features from "@/components/Features2";
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
       <CallToActionWithAnnotation />
       <CompanyInfo />
       <WhatYouGet />
-      <RectangleGrid />
+      {/* <SimpleThreeColumns /> */}
+      {/* <RectangleGrid /> */}
+      <Features />
       <StartProject />
       {/* <SimpleThreeColumns /> */}
     </>
