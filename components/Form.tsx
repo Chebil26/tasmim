@@ -25,23 +25,18 @@ import {
   Progress,
   Text,
   Stack,
-  Radio,
   Card,
   CardBody,
   Image,
   SimpleGrid,
-  RadioGroup,
   Flex,
   GridItem,
   Grid,
   Checkbox,
-  useToast,
   Input,
-  FormControl,
+  Container,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
-import { useForm, SubmitHandler } from "react-hook-form";
-
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/app/Redux/Features/categorySlice";
@@ -53,7 +48,6 @@ import { fetchPalettes } from "@/app/Redux/Features/paletteSlice";
 import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
 import { updateOrderField } from "@/app/Redux/Features/orderFormSlice";
 import { createUserImage } from "@/app/Redux/Features/userImage";
-import { cpSync } from "fs";
 import { createOrder } from "@/app/Redux/Features/orderSlice";
 
 type Category = {
@@ -137,6 +131,8 @@ const StepForm: React.FC = () => {
   const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
 
   const [nextButtonLabel, setNextButtonLabel] = useState("Next");
+  const [previousButtonLabel, setpPreviousButtonLabel] = useState("Previous");
+
   const dispatch: AppDispatch = useDispatch();
   const orderForm: OrderForm = useSelector(
     (state: RootState) => state.orderForm
@@ -160,6 +156,8 @@ const StepForm: React.FC = () => {
   };
 
   const handleNextClick = () => {
+    console.log(step);
+
     if (step < totalSteps) {
       nextStep();
       if (step === 1) {
@@ -174,12 +172,21 @@ const StepForm: React.FC = () => {
     }
   };
 
+  const handlePreviousClick = () => {
+    prevStep();
+  };
+
   return (
-    <Box padding={8} maxWidth={1600} mx="auto">
-      <Grid templateColumns="1fr 3fr 1fr">
+    <Container padding={8} maxWidth={1600} alignItems="center">
+      <Grid templateColumns="1fr 4fr 1fr">
         <GridItem>
-          <Button onClick={prevStep} isDisabled={step === 1}>
+          <Button
+            isDisabled={step === 1}
+            marginRight={4}
+            onClick={handlePreviousClick}
+          >
             <ArrowBackIcon boxSize={4} />
+            {previousButtonLabel}
           </Button>
         </GridItem>
         <GridItem>
@@ -206,32 +213,19 @@ const StepForm: React.FC = () => {
           {step === 5 && <Step5 />}
           {step === 6 && <Step6 />}
           {step === 7 && <Step7 />}
-
-          <Flex justifyContent="space-between" alignItems="center">
-            <Button onClick={prevStep} isDisabled={step === 1} marginRight={2}>
-              <ArrowBackIcon boxSize={4} />
-              Previous
-            </Button>
-
-            <Button
-              onClick={handleNextClick}
-              isDisabled={step === totalSteps || nextButtonDisabled}
-            >
-              {step < totalSteps ? nextButtonLabel : "Finish"}
-              <ArrowForwardIcon boxSize={4} />
-            </Button>
-          </Flex>
         </GridItem>
         <GridItem>
           <Button
+            ml={20}
             onClick={handleNextClick}
             isDisabled={step === totalSteps || nextButtonDisabled}
           >
+            {step < totalSteps ? nextButtonLabel : "Finish"}
             <ArrowForwardIcon boxSize={4} />
           </Button>
         </GridItem>
       </Grid>
-    </Box>
+    </Container>
   );
 };
 const Step1: React.FC<{
