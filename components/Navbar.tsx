@@ -37,6 +37,14 @@ export default function WithSubnavigation() {
     typeof window !== "undefined" ? localStorage.getItem("userInfo") : null;
   const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
 
+  const handleClick = () => {
+    console.log(user_id);
+    if (user_id) {
+      router.push("/form");
+    } else {
+      router.push("/signin");
+    }
+  };
   const handleLogout = () => {
     dispatch(logout());
     router.push("/");
@@ -90,6 +98,21 @@ export default function WithSubnavigation() {
             <DesktopNav />
           </Flex>
         </Flex>
+        <Button
+          onClick={handleClick}
+          color="brand_blue.500"
+          variant="solid"
+          size="md"
+          rounded="md"
+          lineHeight={1}
+          borderRadius="md"
+          backgroundColor="brand_yellow.500"
+          _hover={{ backgroundColor: "yellow.300" }}
+          fontSize="lg"
+          mr={10}
+        >
+          <Text>Commencez votre projet !</Text>
+        </Button>
 
         {!user_id ? (
           <Stack

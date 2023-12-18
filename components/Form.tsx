@@ -35,6 +35,8 @@ import {
   Checkbox,
   Input,
   Container,
+  HStack,
+  chakra,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useEffect } from "react";
@@ -186,7 +188,7 @@ const StepForm: React.FC = () => {
             onClick={handlePreviousClick}
           >
             <ArrowBackIcon boxSize={4} />
-            {previousButtonLabel}
+            Précedent
           </Button>
         </GridItem>
         <GridItem>
@@ -198,7 +200,7 @@ const StepForm: React.FC = () => {
 
           {step === 1 && <Heading mb={4}>Categorie</Heading>}
           {step === 2 && <Heading mb={4}>Type</Heading>}
-          {step === 3 && <Heading mb={4}>Ambiance</Heading>}
+          {/* {step === 3 && <Heading mb={4}>Ambiance</Heading>} */}
           {step === 4 && <Heading mb={4}>Revetement</Heading>}
 
           {step === 1 && (
@@ -220,7 +222,8 @@ const StepForm: React.FC = () => {
             onClick={handleNextClick}
             isDisabled={step === totalSteps || nextButtonDisabled}
           >
-            {step < totalSteps ? nextButtonLabel : "Finish"}
+            {/* {step < totalSteps ? nextButtonLabel : "Finish"} */}
+            Suivant
             <ArrowForwardIcon boxSize={4} />
           </Button>
         </GridItem>
@@ -373,31 +376,16 @@ const Step3: React.FC = () => {
   }, [selectedAmbiance]);
 
   return (
-    <Box padding={2}>
-      <SimpleGrid columns={1} minChildWidth="600px">
-        {palettes.map((palette) => (
-          <Box
-            backgroundColor={selectedPalette === palette.id ? "yellow.200" : ""}
-            onClick={() => handlePaletteChange(palette.id)}
-            key={palette.id}
-          >
-            <Checkbox
-              position="absolute"
-              top="2"
-              size="md"
-              zIndex="1"
-              right="2"
-              colorScheme="brand_blue"
-              isChecked={selectedPalette === palette.id}
-            />
-            <Heading size="xs" textTransform="uppercase">
-              {palette.name}
-            </Heading>
-            <Image src={palette.image_url} alt={palette.name} boxSize="200px" />
-          </Box>
-        ))}
-      </SimpleGrid>
-
+    <VStack padding={2}>
+      <chakra.h3
+        fontSize="3xl"
+        fontWeight="bold"
+        mb={3}
+        textAlign="center"
+        color="brand_blue.500"
+      >
+        Choisissez une ambiance
+      </chakra.h3>
       <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
         {ambiances.map((ambiance) => (
           <Box key={ambiance.id} padding={1}>
@@ -431,7 +419,51 @@ const Step3: React.FC = () => {
           </Box>
         ))}
       </SimpleGrid>
-    </Box>
+
+      <chakra.h3
+        fontSize="3xl"
+        fontWeight="bold"
+        mb={3}
+        textAlign="center"
+        color="brand_blue.500"
+        mt={20}
+      >
+        Choisissez une pallette de coleur
+      </chakra.h3>
+      <SimpleGrid columns={4}>
+        {palettes.map((palette) => (
+          <Box key={palette.id} padding={1}>
+            <Card>
+              <CardBody
+                backgroundColor={
+                  selectedPalette === palette.id ? "yellow.200" : ""
+                }
+                onClick={() => handlePaletteChange(palette.id)}
+              >
+                <Checkbox
+                  position="absolute"
+                  top="2"
+                  size="md"
+                  zIndex="1"
+                  right="2"
+                  colorScheme="brand_blue"
+                  isChecked={selectedPalette === palette.id}
+                />
+                <Image
+                  src={palette.image_url}
+                  alt={palette.name}
+                  boxSize="200px"
+                />
+                {/* <Stack mt="6" spacing="3">
+                  <Heading size="md">{palette.name}</Heading>
+                  <Text>{palette.description}</Text>
+                </Stack> */}
+              </CardBody>
+            </Card>
+          </Box>
+        ))}
+      </SimpleGrid>
+    </VStack>
   );
 };
 
@@ -479,11 +511,11 @@ const Step4: React.FC = () => {
               <Image
                 src={revetement.image_url}
                 alt={revetement.name}
-                boxSize="200px"
+                width="1000px"
+                height="200px"
               />
               <Stack mt="6" spacing="3">
                 <Heading size="md">{revetement.name}</Heading>
-                <Text>{revetement.description}</Text>
               </Stack>
             </CardBody>
           </Card>

@@ -33,6 +33,7 @@ export default function SimpleCard() {
   const handleLogin = () => {
     dispatch(loginUser({ username, password })).then((action) => {
       router.back();
+      window.location.reload();
     });
   };
   return (
