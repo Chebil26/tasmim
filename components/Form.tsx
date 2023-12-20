@@ -37,10 +37,12 @@ import {
   Container,
   HStack,
   chakra,
+  useToast,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 import { fetchCategories } from "@/app/Redux/Features/categorySlice";
 import { fetchTypes } from "@/app/Redux/Features/typeSlice";
 import { RootState, AppDispatch } from "@/app/Redux/store";
@@ -588,30 +590,75 @@ const Step6: React.FC = () => {
 
 const Step7: React.FC = () => {
   const dispatch = useDispatch();
+  const toast = useToast();
+  const router = useRouter();
+
+  const [submitted, setSubmitted] = useState(false);
 
   const orderForm: OrderForm = useSelector(
     (state: RootState) => state.orderForm
   );
 
-  const order_object = {
+  const orderObject = {
     user: orderForm.user,
     category: orderForm.category,
     type: orderForm.type,
     ambiance: orderForm.ambiance,
     revetment: orderForm.revetment,
   };
+
   const handleCreateOrder = () => {
-    console.log(order_object);
-    dispatch(createOrder(order_object) as any);
+    console.log(orderObject);
+    dispatch(createOrder(orderObject) as any);
+    setSubmitted(true);
+
+    // Show a toast when the order is submitted
+    toast({
+      title: "Commande envoyé",
+      description: "Merci pour votre commande !",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
+  const handlereturn = () => {
+    router.push("/");
+  };
   return (
     <VStack align="stretch">
-      <Button onClick={handleCreateOrder}>submit</Button>
+      {!submitted && (
+        <Container>
+          <Button
+            alignItems="center"
+            height="70px"
+            width="md"
+            bgColor="brand_yellow.500"
+            onClick={handleCreateOrder}
+          >
+            Confirmer votre order
+          </Button>
+        </Container>
+      )}
+      {submitted && (
+        <Box p={8} borderWidth={1} borderRadius={8} boxShadow="lg">
+          <VStack spacing={4} align="stretch">
+            <Text fontSize="xl" fontWeight="bold">
+              Merci de vérifier votre e-mail, nous vous contacterons.
+            </Text>
+            <Text>User: {orderObject.user}</Text>
+            <Text>Category: {orderObject.category}</Text>
+            <Text>Type: {orderObject.type}</Text>
+            <Text>Ambiance: {orderObject.ambiance}</Text>
+            <Text>Revetment: {orderObject.revetment}</Text>
+          </VStack>
+
+          <Button onClick={handlereturn}>Retour</Button>
+        </Box>
+      )}
     </VStack>
   );
 };
-
 const Step8: React.FC = () => {
   return (
     <VStack align="stretch">

@@ -109,9 +109,9 @@ export default function WithSubnavigation() {
           backgroundColor="brand_yellow.500"
           _hover={{ backgroundColor: "yellow.300" }}
           fontSize="lg"
-          mr={10}
+          mr={20}
         >
-          <Text>Commencez votre projet !</Text>
+          <Text>Commencez !</Text>
         </Button>
 
         {!user_id ? (
