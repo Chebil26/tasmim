@@ -8,8 +8,9 @@ interface OrderFormState {
   category: number | null;
   type: number | null;
   ambiance: number | null;
+  palette: number | null;
   revetment: number | null;
-  images: any[];
+  imageUrls: string[];
   colors: any[];
   furnitures: any[];
   options: number[];
@@ -24,8 +25,9 @@ const initialState: OrderFormState = {
   category: null,
   type: null,
   ambiance: null,
+  palette: null,
   revetment: null,
-  images: [],
+  imageUrls: [],
   colors: [],
   furnitures: [],
   options: [],

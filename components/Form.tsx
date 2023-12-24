@@ -53,6 +53,8 @@ import { fetchFurnitureTypes } from "@/app/Redux/Features/furnitureTypeSlice";
 import { updateOrderField } from "@/app/Redux/Features/orderFormSlice";
 import { createUserImage } from "@/app/Redux/Features/userImage";
 import { createOrder } from "@/app/Redux/Features/orderSlice";
+import supabase from "@/app/suppabase";
+import { BUCKET_NAME, BUCKET_URL } from "@/config";
 
 type Category = {
   description: string;
@@ -119,8 +121,9 @@ type OrderForm = {
   category: number | null;
   type: number | null;
   ambiance: number | null;
+  palette: number | null;
   revetment: number | null;
-  images: any[];
+  imageUrls: string[];
   colors: any[];
   furnitures: any[];
   options: number[];
@@ -171,8 +174,6 @@ const StepForm: React.FC = () => {
       } else if (step === 3) {
         setNextButtonLabel("Next  4");
       }
-    } else {
-      // Add more conditions as needed
     }
   };
 
@@ -373,9 +374,9 @@ const Step3: React.FC = () => {
   };
 
   useEffect(() => {
-    // dispatch(updateOrderField({ field: "palette", value: palette }));
+    dispatch(updateOrderField({ field: "palette", value: selectedPalette }));
     dispatch(updateOrderField({ field: "ambiance", value: selectedAmbiance }));
-  }, [selectedAmbiance]);
+  }, [selectedPalette, selectedAmbiance]);
 
   return (
     <VStack padding={2}>
@@ -557,33 +558,84 @@ const Step5: React.FC = () => {
 };
 
 const Step6: React.FC = () => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const dispatch: AppDispatch = useDispatch();
 
-  const dispatch = useDispatch();
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const userInfoString =
+    typeof window !== "undefined" ? localStorage.getItem("userInfo") : null;
+  const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
+  const user_name = userInfoString
+    ? JSON.parse(userInfoString).user_name
+    : null;
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
-  };
-
-  const handleUpload = () => {
-    if (user && selectedFile) {
-      dispatch(createUserImage({ user: user, image: selectedFile }) as any);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImageUrl(imageUrl);
     }
   };
 
+  const handleUpload = (file_name: string) => async () => {
+    if (!image) return;
+    console.log(`user_images/${user_id}${user_name}/${file_name}`);
+    try {
+      const { data, error } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(
+          `user_images/${user_id}_${user_name}/${file_name}_${image.name}`,
+          image
+        );
+
+      if (error) {
+        console.error("Error uploading image:", error);
+      } else {
+        const imageUrl = `${BUCKET_URL}${encodeURIComponent(data?.path)}`;
+
+        if (imageUrl) {
+          setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
+          setImage(null);
+          setImageUrl(null);
+        }
+      }
+    } catch (uploadError) {
+      console.error("Error during image upload:", uploadError);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(updateOrderField({ field: "imageUrls", value: imageUrls }));
+  }, [imageUrls]);
+
+  const orderForm: OrderForm = useSelector(
+    (state: RootState) => state.orderForm
+  );
+
   return (
     <Box>
-      <Box mb="4">
-        <label>Choose Image:</label>
-        <Input type="file" onChange={handleFileChange} />
-      </Box>
+      <Input type="file" onChange={handleImageChange} />
 
-      <Button colorScheme="teal" onClick={handleUpload}>
+      {imageUrl && <Image src={imageUrl} alt="Uploaded" maxW="100px" />}
+
+      <Button onClick={handleUpload("plan")} mt={4} colorScheme="teal">
         Upload
       </Button>
+
+      <Box mt={4}>
+        {imageUrls.map((url, index) => (
+          <Image
+            key={index}
+            src={url}
+            alt={`Uploaded ${index}`}
+            maxW="100px"
+            mr="5px"
+          />
+        ))}
+      </Box>
     </Box>
   );
 };
@@ -604,7 +656,9 @@ const Step7: React.FC = () => {
     category: orderForm.category,
     type: orderForm.type,
     ambiance: orderForm.ambiance,
+    palette: orderForm.palette,
     revetment: orderForm.revetment,
+    imageUrls: orderForm.imageUrls,
   };
 
   const handleCreateOrder = () => {
@@ -650,7 +704,17 @@ const Step7: React.FC = () => {
             <Text>Category: {orderObject.category}</Text>
             <Text>Type: {orderObject.type}</Text>
             <Text>Ambiance: {orderObject.ambiance}</Text>
+            <Text>Palette: {orderObject.palette}</Text>
             <Text>Revetment: {orderObject.revetment}</Text>
+            {orderForm.imageUrls &&
+              orderForm.imageUrls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Uploaded ${index}`}
+                  style={{ maxWidth: "100px", marginRight: "5px" }}
+                />
+              ))}
           </VStack>
 
           <Button onClick={handlereturn}>Retour</Button>

@@ -5,11 +5,13 @@ import { API_BASE_URL } from "@/config";
 
 interface AuthState {
   user: any;
+  user_name: string | null;
   isAuthenticated: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
+  user_name: null,
   isAuthenticated: false,
 };
 
