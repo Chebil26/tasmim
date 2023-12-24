@@ -215,9 +215,10 @@ const StepForm: React.FC = () => {
           {step === 2 && <Step2 selectedCategory={selectedCategory} />}
           {step === 3 && <Step3 />}
           {step === 4 && <Step4 />}
-          {step === 5 && <Step5 />}
+          {/* {step === 5 && <Step5 />} */}
           {step === 6 && <Step6 />}
           {step === 7 && <Step7 />}
+          {step === 8 && <Step8 />}
         </GridItem>
         <GridItem>
           <Button
@@ -378,95 +379,105 @@ const Step3: React.FC = () => {
     dispatch(updateOrderField({ field: "ambiance", value: selectedAmbiance }));
   }, [selectedPalette, selectedAmbiance]);
 
+  const orderForm: OrderForm = useSelector(
+    (state: RootState) => state.orderForm
+  );
+  console.log("cate", orderForm.category);
   return (
-    <VStack padding={2}>
-      <chakra.h3
-        fontSize="3xl"
-        fontWeight="bold"
-        mb={3}
-        textAlign="center"
-        color="brand_blue.500"
-      >
-        Choisissez une ambiance
-      </chakra.h3>
-      <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
-        {ambiances.map((ambiance) => (
-          <Box key={ambiance.id} padding={1}>
-            <Card>
-              <CardBody
-                backgroundColor={
-                  selectedAmbiance === ambiance.id ? "yellow.200" : ""
-                }
-                onClick={() => handleAmbianceChange(ambiance.id)}
-              >
-                <Checkbox
-                  position="absolute"
-                  top="2"
-                  size="md"
-                  zIndex="1"
-                  right="2"
-                  colorScheme="brand_blue"
-                  isChecked={selectedAmbiance === ambiance.id}
-                />
-                <Image
-                  src={ambiance.image_url}
-                  alt={ambiance.name}
-                  boxSize="200px"
-                />
-                <Stack mt="6" spacing="3">
-                  <Heading size="md">{ambiance.name}</Heading>
-                  <Text>{ambiance.description}</Text>
-                </Stack>
-              </CardBody>
-            </Card>
-          </Box>
-        ))}
-      </SimpleGrid>
+    <>
+      {orderForm.category === 4 ? (
+        <VStack padding={2}>
+          <chakra.h3
+            fontSize="3xl"
+            fontWeight="bold"
+            mb={3}
+            textAlign="center"
+            color="brand_blue.500"
+          >
+            Choisissez une ambiance
+          </chakra.h3>
+          <SimpleGrid columns={3} spacing="20px" minChildWidth="250px">
+            {ambiances.map((ambiance) => (
+              <Box key={ambiance.id} padding={1}>
+                <Card>
+                  <CardBody
+                    backgroundColor={
+                      selectedAmbiance === ambiance.id ? "yellow.200" : ""
+                    }
+                    onClick={() => handleAmbianceChange(ambiance.id)}
+                  >
+                    <Checkbox
+                      position="absolute"
+                      top="2"
+                      size="md"
+                      zIndex="1"
+                      right="2"
+                      colorScheme="brand_blue"
+                      isChecked={selectedAmbiance === ambiance.id}
+                    />
+                    <Image
+                      src={ambiance.image_url}
+                      alt={ambiance.name}
+                      boxSize="200px"
+                    />
+                    <Stack mt="6" spacing="3">
+                      <Heading size="md">{ambiance.name}</Heading>
+                      <Text>{ambiance.description}</Text>
+                    </Stack>
+                  </CardBody>
+                </Card>
+              </Box>
+            ))}
+          </SimpleGrid>
 
-      <chakra.h3
-        fontSize="3xl"
-        fontWeight="bold"
-        mb={3}
-        textAlign="center"
-        color="brand_blue.500"
-        mt={20}
-      >
-        Choisissez une pallette de coleur
-      </chakra.h3>
-      <SimpleGrid columns={4}>
-        {palettes.map((palette) => (
-          <Box key={palette.id} padding={1}>
-            <Card>
-              <CardBody
-                backgroundColor={
-                  selectedPalette === palette.id ? "yellow.200" : ""
-                }
-                onClick={() => handlePaletteChange(palette.id)}
-              >
-                <Checkbox
-                  position="absolute"
-                  top="2"
-                  size="md"
-                  zIndex="1"
-                  right="2"
-                  colorScheme="brand_blue"
-                  isChecked={selectedPalette === palette.id}
-                />
-                <Image
-                  src={palette.image_url}
-                  alt={palette.name}
-                  boxSize="200px"
-                />
-                {/* <Stack mt="6" spacing="3">
+          <chakra.h3
+            fontSize="3xl"
+            fontWeight="bold"
+            mb={3}
+            textAlign="center"
+            color="brand_blue.500"
+            mt={20}
+          >
+            Choisissez une pallette de coleur
+          </chakra.h3>
+          <SimpleGrid columns={4}>
+            {palettes.map((palette) => (
+              <Box key={palette.id} padding={1}>
+                <Card>
+                  <CardBody
+                    backgroundColor={
+                      selectedPalette === palette.id ? "yellow.200" : ""
+                    }
+                    onClick={() => handlePaletteChange(palette.id)}
+                  >
+                    <Checkbox
+                      position="absolute"
+                      top="2"
+                      size="md"
+                      zIndex="1"
+                      right="2"
+                      colorScheme="brand_blue"
+                      isChecked={selectedPalette === palette.id}
+                    />
+                    <Image
+                      src={palette.image_url}
+                      alt={palette.name}
+                      boxSize="200px"
+                    />
+                    {/* <Stack mt="6" spacing="3">
                   <Heading size="md">{palette.name}</Heading>
                   <Text>{palette.description}</Text>
                 </Stack> */}
-              </CardBody>
-            </Card>
-          </Box>
-        ))}
-      </SimpleGrid>
-    </VStack>
+                  </CardBody>
+                </Card>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </VStack>
+      ) : (
+        <Box>choose particulier</Box>
+      )}
+    </>
   );
 };
 
@@ -587,7 +598,7 @@ const Step6: React.FC = () => {
       const { data, error } = await supabase.storage
         .from(BUCKET_NAME)
         .upload(
-          `user_images/${user_id}_${user_name}/${file_name}_${image.name}`,
+          `user_images/${user_id}--${user_name}/${file_name}_${image.name}`,
           image
         );
 
@@ -617,30 +628,170 @@ const Step6: React.FC = () => {
 
   return (
     <Box>
-      <Input type="file" onChange={handleImageChange} />
+      <chakra.h3
+        fontSize="3xl"
+        fontWeight="bold"
+        mb={3}
+        textAlign="center"
+        color="brand_blue.500"
+        mt={20}
+      >
+        Ajoutez des inspiration
+      </chakra.h3>
+      <VStack m={10}>
+        <Input type="file" onChange={handleImageChange} maxWidth="400px" />
 
-      {imageUrl && <Image src={imageUrl} alt="Uploaded" maxW="100px" />}
+        {imageUrl && <Image src={imageUrl} alt="Uploaded" maxW="100px" />}
 
-      <Button onClick={handleUpload("plan")} mt={4} colorScheme="teal">
-        Upload
-      </Button>
+        <Button onClick={handleUpload("inspiration")} mt={4} colorScheme="blue">
+          Uploader
+        </Button>
+      </VStack>
 
-      <Box mt={4}>
+      <SimpleGrid spacing={4} minChildWidth="200px">
         {imageUrls.map((url, index) => (
-          <Image
-            key={index}
-            src={url}
-            alt={`Uploaded ${index}`}
-            maxW="100px"
-            mr="5px"
-          />
+          <Image key={index} src={url} alt={url} maxW="200px" mr="5px" />
         ))}
-      </Box>
+      </SimpleGrid>
     </Box>
   );
 };
 
 const Step7: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+
+  const [image, setImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+  const userInfoString =
+    typeof window !== "undefined" ? localStorage.getItem("userInfo") : null;
+  const user_id = userInfoString ? JSON.parse(userInfoString).user_id : null;
+  const user_name = userInfoString
+    ? JSON.parse(userInfoString).user_name
+    : null;
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const imageUrl = URL.createObjectURL(file);
+      setImageUrl(imageUrl);
+    }
+  };
+
+  const handleUpload = (file_name: string) => async () => {
+    if (!image) return;
+    console.log(`user_images/${user_id}${user_name}/${file_name}`);
+    try {
+      const { data, error } = await supabase.storage
+        .from(BUCKET_NAME)
+        .upload(
+          `user_images/${user_id}--${user_name}/${file_name}_${image.name}`,
+          image
+        );
+
+      if (error) {
+        console.error("Error uploading image:", error);
+      } else {
+        const imageUrl = `${BUCKET_URL}${encodeURIComponent(data?.path)}`;
+
+        if (imageUrl) {
+          setImageUrls((prevImageUrls) => [...prevImageUrls, imageUrl]);
+          setImage(null);
+          setImageUrl(null);
+        }
+      }
+    } catch (uploadError) {
+      console.error("Error during image upload:", uploadError);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(updateOrderField({ field: "imageUrls", value: imageUrls }));
+  }, [imageUrls]);
+
+  const orderForm: OrderForm = useSelector(
+    (state: RootState) => state.orderForm
+  );
+
+  return (
+    <Box>
+      <Box>
+        <chakra.h4
+          fontSize="4xl"
+          fontWeight="bold"
+          mb={3}
+          textAlign="center"
+          color="brand_blue.500"
+          mt={20}
+        >
+          Ajoutez des images de votre espace
+        </chakra.h4>
+        <VStack m={2}>
+          <Input type="file" onChange={handleImageChange} maxWidth="400px" />
+
+          {imageUrl && <Image src={imageUrl} alt="espace" maxW="100px" />}
+
+          <Button onClick={handleUpload("espace")} mt={4} colorScheme="blue">
+            Uploader
+          </Button>
+        </VStack>
+      </Box>
+
+      <Box>
+        <chakra.h4
+          fontSize="4xl"
+          fontWeight="bold"
+          mb={3}
+          textAlign="center"
+          color="brand_blue.500"
+          mt={5}
+        >
+          Ajoutez un plan
+        </chakra.h4>
+        <VStack m={2}>
+          <Input type="file" onChange={handleImageChange} maxWidth="400px" />
+
+          {imageUrl && <Image src={imageUrl} alt="Uploaded" maxW="100px" />}
+
+          <Button onClick={handleUpload("plan")} mt={4} colorScheme="blue">
+            Uploader
+          </Button>
+        </VStack>
+      </Box>
+
+      <Box>
+        <chakra.h4
+          fontSize="4xl"
+          fontWeight="bold"
+          mb={3}
+          textAlign="center"
+          color="brand_blue.500"
+          mt={5}
+        >
+          Ajoutez un dessin
+        </chakra.h4>
+        <VStack m={2}>
+          <Input type="file" onChange={handleImageChange} maxWidth="400px" />
+
+          {imageUrl && <Image src={imageUrl} alt={imageUrl} maxW="100px" />}
+
+          <Button onClick={handleUpload("dessin")} mt={4} colorScheme="blue">
+            Uploader
+          </Button>
+        </VStack>
+      </Box>
+      <SimpleGrid spacing={4} minChildWidth="200px">
+        {imageUrls.map((url, index) => (
+          <Image key={index} src={url} alt={url} maxW="200px" mr="5px" />
+        ))}
+      </SimpleGrid>
+    </Box>
+  );
+};
+
+const Step8: React.FC = () => {
   const dispatch = useDispatch();
   const toast = useToast();
   const router = useRouter();
@@ -723,7 +874,7 @@ const Step7: React.FC = () => {
     </VStack>
   );
 };
-const Step8: React.FC = () => {
+const Step9: React.FC = () => {
   return (
     <VStack align="stretch">
       <Text>Step 4 content</Text>
